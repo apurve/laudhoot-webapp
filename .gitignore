@@ -1,0 +1,11 @@
+# generated files
+/bin/
+/gen/
+/build/
+/libs/
+
+
+#Misc
+/.gradle/
+/.settings/
+/proguard-project.txt
