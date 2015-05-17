@@ -1,39 +1,57 @@
 package laudhoot.config.web;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.i18n.FixedLocaleResolver;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
+import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
+import org.springframework.web.servlet.view.tiles3.TilesView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "laudhoot.rest.controller")
+@ComponentScan(basePackages = "laudhoot.web.controller")
 public class WebMVCConfig extends WebMvcConfigurerAdapter{
-	//private static final String VIEW_RESOLVER_PREFIX = "/WEB-INF/jsp/";
-    //private static final String VIEW_RESOLVER_SUFFIX = ".jsp";
 	
 	/**
-	 * To point container to some directory for serving static serources like css and javascript.
+	 * To point container to some directory for serving static resources like css and javascript.
 	 */
-	/*@Override
+	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-	    registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
-	}*/
+	    registry.addResourceHandler("/static/**").addResourceLocations("/static/");
+	}
 	
 	/**
-	 * Configure container to some directory for serving static serources like css and javascript.
+	 * Configure container to some directory for serving static resources like css and javascript.
 	 */
-	/*@Override
+	@Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
-    }*/
+    }
 	
-	/*@Bean
+	@Bean
     public ViewResolver viewResolver() {
-        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setViewClass(JstlView.class);
-        viewResolver.setPrefix(VIEW_RESOLVER_PREFIX);
-        viewResolver.setSuffix(VIEW_RESOLVER_SUFFIX);
+		UrlBasedViewResolver viewResolver = new UrlBasedViewResolver();
+        viewResolver.setViewClass(TilesView.class);
         return viewResolver;
-    }*/
+    }
+	
+	@Bean
+	public TilesConfigurer tilesConfigurer() {
+		TilesConfigurer tilesConfigurer = new TilesConfigurer();
+		tilesConfigurer.setDefinitions("/WEB-INF/**/tiles.xml");
+		return tilesConfigurer;
+	}
+	
+	@Bean
+	public LocaleResolver localeResolver(){
+		return new FixedLocaleResolver();
+	}
+	
 }

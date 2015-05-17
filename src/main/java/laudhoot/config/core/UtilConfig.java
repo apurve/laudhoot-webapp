@@ -31,13 +31,9 @@ public class UtilConfig {
 		return messageSource;
 	}
 
-	/*@Bean
-	public static InjectLoggerAnnotationBeanPostProcessor loggerPostProcessor() {
-		return new InjectLoggerAnnotationBeanPostProcessor();
-	}*/
-	
 	@Bean
 	public Logger logger(){
 		return Logger.getLogger("laudhoot-logger");
 	}
+	
 }
