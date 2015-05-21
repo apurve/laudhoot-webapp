@@ -1,15 +1,18 @@
 package laudhoot.core.services;
 
-import java.util.List;
+import java.util.Set;
+
+import org.springframework.validation.BindingResult;
 
 import laudhoot.core.domain.GeoFence;
+import laudhoot.web.domain.GeoFenceTO;
 
 public interface GeoFenceService {
 
 	/**
 	 * Creates a geofence, returns an existing one if code of the geofence already exists.
 	 * */
-	public GeoFence create();
+	public GeoFenceTO create(GeoFenceTO geofenceTO, BindingResult result);
 	
 	/**
 	 * Fetches a geofence from database based on the provided code.
@@ -18,12 +21,13 @@ public interface GeoFenceService {
 	 * 
 	 * @return {@link GeoFence}
 	 * */
-	public GeoFence fetch(String code);
+	public GeoFenceTO fetch(String code);
 	
 	/**
 	 * Fetches all geofences from database.
 	 * 
 	 * @return all {@link GeoFence}(s)
 	 * */
-	public List<GeoFence> fetchAll();
+	public Set<GeoFenceTO> fetchAll();
+
 }

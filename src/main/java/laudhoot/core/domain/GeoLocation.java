@@ -1,6 +1,9 @@
 package laudhoot.core.domain;
 
 import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
+
+import laudhoot.web.domain.GeoLocationTO;
 
 /**
  * A geographical location on the earth.
@@ -16,6 +19,12 @@ public class GeoLocation extends BaseDomain {
 
 	public GeoLocation() {
 		super();
+	}
+	
+	public GeoLocation(GeoLocationTO geoLocationTO) {
+		super();
+		this.latitude = geoLocationTO.getLatitude();
+		this.longitude = geoLocationTO.getLongitude();
 	}
 
 	public GeoLocation(Double latitude, Double longitude) {

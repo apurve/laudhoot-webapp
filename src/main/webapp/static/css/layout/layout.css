@@ -6,7 +6,7 @@ body {
 	font-size: 1.1em;
 }
 
-input,button {
+input, button {
 	border: 1px solid #E1E1E1;
 	font-size: 1.2em;
 	position: relative;
@@ -106,6 +106,12 @@ table td {
 }
 
 IMG.displayed-r {
-    display: block;
-    margin-left: auto;
-    margin-right: none }
+	display: block;
+	margin-left: auto;
+	margin-right: none
+}
+
+.error {
+	color: #ff0000;
+	font-weight: bold;
+}

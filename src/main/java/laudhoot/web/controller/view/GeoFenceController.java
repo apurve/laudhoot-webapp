@@ -1,17 +1,19 @@
 package laudhoot.web.controller.view;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.Set;
 
 import laudhoot.core.domain.GeoFence;
-import laudhoot.core.repository.GeoFenceRepository;
 import laudhoot.core.services.GeoFenceService;
+import laudhoot.web.domain.GeoFenceTO;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -24,26 +26,25 @@ public class GeoFenceController extends BaseController {
 	@Autowired
 	private GeoFenceService geoFenceService;
 
-	@RequestMapping(value = "/create")
-	public String create(ModelMap map) {
-		logger.info("START GEOFENCE CONTROLLER : /create");
-		GeoFence geofence = geoFenceService.create();
-		map.put("geofence", geofence);
-		logger.info("END GEOFENCE CONTROLLER : /create");
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public String getGeoFence(ModelMap map) {
+		map.put("geofence", new GeoFenceTO());
 		return "geofence";
 	}
 
-	@RequestMapping(value = "/view")
-	public @ResponseBody List<GeoFence> view() {
-		logger.info("START GEOFENCE CONTROLLER : /view");
-		List<GeoFence> fences = (List<GeoFence>) geoFenceService.fetchAll();
-		Iterator<GeoFence> iterator = fences.iterator();
-		while (iterator.hasNext()) {
-			logger.info("EXECUTING GEOFENCE CONTROLLER : "
-					+ iterator.next().getEntityURI());
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	public String saveGeoFence(ModelMap map, @ModelAttribute("geofence") GeoFenceTO geoFenceTO, BindingResult result) {
+		geoFenceTO = geoFenceService.create(geoFenceTO, result);
+		map.put("geofence", geoFenceTO);
+		if (result.hasErrors()) {
+			return "geofence";
 		}
-		logger.info("END GEOFENCE CONTROLLER : /view");
-		return fences;
+		return "redirect:view";
+	}
+
+	@RequestMapping(value = "/view", method = RequestMethod.GET)
+	public @ResponseBody Set<GeoFenceTO> view() {
+		return geoFenceService.fetchAll();
 	}
 
 }

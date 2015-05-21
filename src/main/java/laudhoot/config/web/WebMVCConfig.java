@@ -1,8 +1,11 @@
 package laudhoot.config.web;
 
+import laudhoot.core.util.LaudhootDomainValidatorImpl;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.Validator;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -52,6 +55,12 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter{
 	@Bean
 	public LocaleResolver localeResolver(){
 		return new FixedLocaleResolver();
+	}
+	
+	@Override
+	@Bean
+	public Validator getValidator() {
+		return new LaudhootDomainValidatorImpl();
 	}
 	
 }

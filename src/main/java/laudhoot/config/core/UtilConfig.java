@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 import org.apache.log4j.Logger;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -12,6 +13,7 @@ import org.springframework.core.env.Environment;
 
 @Configuration
 @PropertySource("classpath:util.properties")
+@ComponentScan(basePackages = "laudhoot.core.util")
 public class UtilConfig {
 
 	private static final String PROPERTY_NAME_MESSAGESOURCE_BASENAME = "message.source.basename";
