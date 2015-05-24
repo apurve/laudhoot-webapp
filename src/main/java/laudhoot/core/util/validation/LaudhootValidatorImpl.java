@@ -1,4 +1,4 @@
-package laudhoot.core.util;
+package laudhoot.core.util.validation;
 
 import java.util.Set;
 
@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 
 @Component
-public class LaudhootDomainValidatorImpl implements InitializingBean,
-		LaudhootDomainValidator {
+public class LaudhootValidatorImpl implements InitializingBean,
+		LaudhootValidator {
 
 	private Validator validator;
 

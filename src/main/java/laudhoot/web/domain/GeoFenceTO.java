@@ -4,7 +4,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 
 import laudhoot.core.domain.GeoFence;
 
@@ -23,10 +22,11 @@ public class GeoFenceTO extends BaseTO {
 	
 	@NotNull(groups={ServiceRequest.CreateGeoFence.class})
 	@Valid
-	private GeoLocationTO center;
+	private CoordinateTO center;
 	
 	@NotNull(groups={ServiceRequest.CreateGeoFence.class})
 	@Min(value=1000, groups={ServiceRequest.CreateGeoFence.class})
+	@Max(value=5000, groups={ServiceRequest.CreateGeoFence.class})
 	private Integer radiusInMeters;
 	
 	@NotNull(groups={ServiceRequest.CreateGeoFence.class})
@@ -44,12 +44,12 @@ public class GeoFenceTO extends BaseTO {
 		this.name = geofence.getName();
 		this.code = geofence.getCode();
 		this.description = geofence.getDescription();
-		this.center = new GeoLocationTO(geofence.getCenter());
+		this.center = new CoordinateTO(geofence.getCenter());
 		this.radiusInMeters = geofence.getRadius();
 		this.expiresInHours = Hours.hoursBetween(DateTime.now(), geofence.getExpiresOn()).getHours();
 	}
 	
-	public GeoFenceTO(String code, GeoLocationTO center, Integer radiusInMeters,
+	public GeoFenceTO(String code, CoordinateTO center, Integer radiusInMeters,
 			Integer expiresInHours) {
 		super();
 		this.code = code;
@@ -59,7 +59,7 @@ public class GeoFenceTO extends BaseTO {
 	}
 
 	public GeoFenceTO(String name, String code, String description,
-			GeoLocationTO center, Integer radiusInMeters, Integer expiresInHours) {
+			CoordinateTO center, Integer radiusInMeters, Integer expiresInHours) {
 		super();
 		this.name = name;
 		this.code = code;
@@ -93,11 +93,11 @@ public class GeoFenceTO extends BaseTO {
 		this.description = description;
 	}
 
-	public GeoLocationTO getCenter() {
+	public CoordinateTO getCenter() {
 		return center;
 	}
 
-	public void setCenter(GeoLocationTO center) {
+	public void setCenter(CoordinateTO center) {
 		this.center = center;
 	}
 

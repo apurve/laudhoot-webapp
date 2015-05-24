@@ -1,6 +1,6 @@
 package laudhoot.config.web;
 
-import laudhoot.core.util.LaudhootDomainValidatorImpl;
+import laudhoot.core.util.validation.LaudhootValidatorImpl;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -60,7 +60,7 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter{
 	@Override
 	@Bean
 	public Validator getValidator() {
-		return new LaudhootDomainValidatorImpl();
+		return new LaudhootValidatorImpl();
 	}
 	
 }

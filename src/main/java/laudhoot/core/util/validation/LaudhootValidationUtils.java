@@ -1,10 +1,11 @@
-package laudhoot.core.util;
+package laudhoot.core.util.validation;
 
 import org.springframework.util.StringUtils;
 
 import laudhoot.core.domain.BaseDomain;
+import laudhoot.core.util.LaudhootValidationException;
 
-public class LaudhootValidator {
+public class LaudhootValidationUtils {
 
 	/**
 	 * Checks if the string is not null and not blank.

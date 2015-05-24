@@ -2,7 +2,6 @@ package laudhoot.web.controller.view;
 
 import java.util.Set;
 
-import laudhoot.core.domain.GeoFence;
 import laudhoot.core.services.GeoFenceService;
 import laudhoot.web.domain.GeoFenceTO;
 
@@ -34,7 +33,8 @@ public class GeoFenceController extends BaseController {
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public String saveGeoFence(ModelMap map, @ModelAttribute("geofence") GeoFenceTO geoFenceTO, BindingResult result) {
-		geoFenceTO = geoFenceService.create(geoFenceTO, result);
+		geoFenceTO.setValidationResult(result);
+		geoFenceTO = geoFenceService.createGeoFence(geoFenceTO);
 		map.put("geofence", geoFenceTO);
 		if (result.hasErrors()) {
 			return "geofence";
@@ -44,7 +44,7 @@ public class GeoFenceController extends BaseController {
 
 	@RequestMapping(value = "/view", method = RequestMethod.GET)
 	public @ResponseBody Set<GeoFenceTO> view() {
-		return geoFenceService.fetchAll();
+		return geoFenceService.fetchAllGeoFences();
 	}
 
 }

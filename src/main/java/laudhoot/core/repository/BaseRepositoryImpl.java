@@ -16,4 +16,8 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends
 		this.entityManager = entityManager;
 	}
 
+	public EntityManager getEntityManager() {
+		return entityManager;
+	}
+
 }

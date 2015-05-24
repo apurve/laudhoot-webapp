@@ -4,16 +4,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 import laudhoot.web.domain.GeoFenceTO;
-import laudhoot.web.domain.GeoLocationTO;
 
 import org.hibernate.annotations.Type;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
-import org.joda.time.Hours;
 
 /**
  * A geographical fence under which a network can be established.
@@ -36,7 +31,7 @@ public class GeoFence extends BaseDomain {
 	private String description;
 	
 	@OneToOne
-	private GeoLocation center;
+	private Coordinate center;
 	
 	//radius of geofence in meters
 	private Integer radius;
@@ -54,12 +49,12 @@ public class GeoFence extends BaseDomain {
 		this.name = geofenceTO.getName();
 		this.code = geofenceTO.getCode();
 		this.description = geofenceTO.getDescription();
-		this.center = new GeoLocation(geofenceTO.getCenter());
+		this.center = new Coordinate(geofenceTO.getCenter());
 		this.radius = geofenceTO.getRadiusInMeters();
 		this.expiresOn = DateTime.now().plusHours(geofenceTO.getExpiresInHours());
 	}
 	
-	public GeoFence(String code, GeoLocation center, Integer radius,
+	public GeoFence(String code, Coordinate center, Integer radius,
 			DateTime expiresOn) {
 		super();
 		this.code = code;
@@ -69,7 +64,7 @@ public class GeoFence extends BaseDomain {
 	}
 
 	public GeoFence(String name, String code, String description,
-			GeoLocation center, Integer radius, DateTime expiresOn) {
+			Coordinate center, Integer radius, DateTime expiresOn) {
 		super();
 		this.name = name;
 		this.code = code;
@@ -103,11 +98,11 @@ public class GeoFence extends BaseDomain {
 		this.description = description;
 	}
 
-	public GeoLocation getCenter() {
+	public Coordinate getCenter() {
 		return center;
 	}
 
-	public void setCenter(GeoLocation center) {
+	public void setCenter(Coordinate center) {
 		this.center = center;
 	}
 

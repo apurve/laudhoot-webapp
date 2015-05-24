@@ -1,30 +1,29 @@
 package laudhoot.web.domain;
 
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
+import laudhoot.core.domain.Coordinate;
+import laudhoot.core.util.validation.Latitude;
+import laudhoot.core.util.validation.Longitude;
 
-import laudhoot.core.domain.GeoLocation;
-
-public class GeoLocationTO extends BaseTO {
+public class CoordinateTO extends BaseTO {
 	
-	@NotNull(groups={ServiceRequest.CreateGeoFence.class})
+	@Latitude(groups={ServiceRequest.CreateGeoFence.class, ServiceRequest.class})
 	private Double latitude;
 	
-	@NotNull(groups={ServiceRequest.CreateGeoFence.class})
+	@Longitude(groups={ServiceRequest.CreateGeoFence.class, ServiceRequest.class})
 	private Double longitude;
 	
-	public GeoLocationTO() {
+	public CoordinateTO() {
 		super();
 	}
 
-	public GeoLocationTO(Double latitude, Double longitude) {
+	public CoordinateTO(Double latitude, Double longitude) {
 		super();
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}
 	
-	public GeoLocationTO(GeoLocation geoLocation) {
+	public CoordinateTO(Coordinate geoLocation) {
 		super();
 		this.latitude = geoLocation.getLatitude();
 		this.longitude = geoLocation.getLongitude();

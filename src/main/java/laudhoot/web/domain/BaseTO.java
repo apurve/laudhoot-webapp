@@ -10,6 +10,12 @@ public class BaseTO {
 	@NotNull(groups={ServiceResponse.class, ServiceRequest.class})
 	Long id;
 	
+	/**
+	 * The result is passed from the controller to the service where validation is performed
+	 * the service should never create a new BindingResult object rather perform operation
+	 * of the passed objects so that validation results are available in the controller by using
+	 * the same reference.
+	 * */
 	BindingResult validationResult;
 
 	public BaseTO() {
