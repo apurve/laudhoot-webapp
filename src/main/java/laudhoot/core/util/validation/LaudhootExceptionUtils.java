@@ -5,7 +5,7 @@ import org.springframework.util.StringUtils;
 import laudhoot.core.domain.BaseDomain;
 import laudhoot.core.util.LaudhootValidationException;
 
-public class LaudhootValidationUtils {
+public class LaudhootExceptionUtils {
 
 	/**
 	 * Checks if the string is not null and not blank.

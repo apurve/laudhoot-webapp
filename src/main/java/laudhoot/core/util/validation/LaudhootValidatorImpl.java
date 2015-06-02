@@ -9,7 +9,9 @@ import javax.validation.ValidatorFactory;
 
 import laudhoot.core.domain.BaseDomain;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 
@@ -18,7 +20,10 @@ public class LaudhootValidatorImpl implements InitializingBean,
 		LaudhootValidator {
 
 	private Validator validator;
-
+	
+	@Autowired
+	private Logger logger;
+	
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		ValidatorFactory validatorFactory = Validation
@@ -57,6 +62,7 @@ public class LaudhootValidatorImpl implements InitializingBean,
 			String propertyPath = constraintViolation.getPropertyPath()
 					.toString();
 			String message = constraintViolation.getMessage();
+			logger.info("Data Integrity Violation - " + message + "" + propertyPath + constraintViolation.getConstraintDescriptor().getGroups());
 			errors.rejectValue(propertyPath, "", message);
 		}
 	}

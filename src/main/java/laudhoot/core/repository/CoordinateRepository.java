@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import laudhoot.core.domain.Coordinate;
 
 @Repository
-public interface GeoLocationRepository extends BaseRepository<Coordinate, Long> {
+public interface CoordinateRepository extends BaseRepository<Coordinate, Long> {
 
 }

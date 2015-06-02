@@ -7,9 +7,9 @@ import java.util.Set;
 import laudhoot.core.domain.Coordinate;
 import laudhoot.core.domain.GeoFence;
 import laudhoot.core.repository.GeoFenceRepository;
-import laudhoot.core.repository.GeoLocationRepository;
+import laudhoot.core.repository.CoordinateRepository;
 import laudhoot.core.util.CoordinateManager;
-import laudhoot.core.util.validation.LaudhootValidationUtils;
+import laudhoot.core.util.validation.LaudhootExceptionUtils;
 import laudhoot.core.util.validation.LaudhootValidator;
 import laudhoot.web.domain.CoordinateTO;
 import laudhoot.web.domain.GeoFenceTO;
@@ -25,14 +25,14 @@ public class GeoFenceServiceImpl implements GeoFenceService {
 	private GeoFenceRepository fenceRepository;
 
 	@Autowired
-	private GeoLocationRepository locationRepository;
+	private CoordinateRepository locationRepository;
 
 	@Autowired
 	private LaudhootValidator validator;
 
 	@Override
 	public GeoFenceTO createGeoFence(GeoFenceTO geofenceTO) {
-		LaudhootValidationUtils.isNotNull(geofenceTO,
+		LaudhootExceptionUtils.isNotNull(geofenceTO,
 				"Geofence cannot be null.");
 		validator.validate(geofenceTO, geofenceTO.getValidationResult(),
 				ServiceRequest.CreateGeoFence.class);
@@ -74,15 +74,24 @@ public class GeoFenceServiceImpl implements GeoFenceService {
 		if (locationTO.getValidationResult().hasErrors()) {
 			return null;
 		}
-		// TODO - improve the algorithm to search for geofence
+		// TODO - improve the algorithm to search for geoFence
 		Coordinate location = new Coordinate(locationTO);
 		List<GeoFence> geoFences = (List<GeoFence>) fenceRepository.findAll();
 		for (GeoFence geoFence : geoFences) {
-			Double distanceFromCenter = CoordinateManager.distanceBetween(geoFence.getCenter(), location);
-			if(distanceFromCenter>geoFence.getRadius()){
+			Double distanceFromCenter = CoordinateManager.distanceBetween(
+					geoFence.getCenter(), location);
+			if (distanceFromCenter > geoFence.getRadius()) {
 				return new GeoFenceTO(geoFence);
 			}
 		}
+		return null;
+	}
+	
+	@Override
+	public String findGeoFenceCode(CoordinateTO locationTO) {
+		GeoFenceTO geoFenceTO = findGeoFence(locationTO);
+		if(geoFenceTO != null)
+			return geoFenceTO.getCode();
 		return null;
 	}
 }

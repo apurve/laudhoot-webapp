@@ -9,7 +9,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
 import laudhoot.core.util.LaudhootValidationException;
-import laudhoot.core.util.validation.LaudhootValidationUtils;
+import laudhoot.core.util.validation.LaudhootExceptionUtils;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
@@ -45,7 +45,7 @@ public abstract class BaseDomain {
 	}
 
 	public String getEntityURI() throws LaudhootValidationException {
-		if(LaudhootValidationUtils.isPersisted(this, "Entity is not persisted."))
+		if(LaudhootExceptionUtils.isPersisted(this, "Entity is not persisted."))
 			return this.getClass().getCanonicalName()+":"+String.valueOf(this.id);
 		return null;
 	}

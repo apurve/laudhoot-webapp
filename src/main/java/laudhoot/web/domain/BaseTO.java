@@ -1,9 +1,15 @@
 package laudhoot.web.domain;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
+import org.springframework.context.MessageSource;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 
 public class BaseTO {
 	@Null(groups={ServiceRequest.CreateGeoFence.class})
@@ -17,6 +23,10 @@ public class BaseTO {
 	 * the same reference.
 	 * */
 	BindingResult validationResult;
+	
+	boolean error;
+	
+	Map<String, String> errorMessages;
 
 	public BaseTO() {
 		super();
@@ -42,6 +52,26 @@ public class BaseTO {
 
 	public void setValidationResult(BindingResult validationResult) {
 		this.validationResult = validationResult;
+	}
+
+	public boolean hasError() {
+		return error;
+	}
+
+	public void setError(boolean error) {
+		this.error = error;
+	}
+
+	public Map<String, String> getErrorMessage() {
+		return errorMessages;
+	}
+
+	public void prepareMobileResponce(MessageSource messageSource){
+		this.error = validationResult.hasErrors();
+		errorMessages = new HashMap<String, String>();
+		for(FieldError fieldError : validationResult.getFieldErrors()) {
+			errorMessages.put(fieldError.getField(), messageSource.getMessage(fieldError, null));
+		}
 	}
 	
 }

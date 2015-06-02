@@ -26,13 +26,13 @@ public class GeoFenceController extends BaseController {
 	private GeoFenceService geoFenceService;
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public String getGeoFence(ModelMap map) {
+	public String createGeoFence(ModelMap map) {
 		map.put("geofence", new GeoFenceTO());
 		return "geofence";
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public String saveGeoFence(ModelMap map, @ModelAttribute("geofence") GeoFenceTO geoFenceTO, BindingResult result) {
+	public String createGeoFence(ModelMap map, @ModelAttribute("geofence") GeoFenceTO geoFenceTO, BindingResult result) {
 		geoFenceTO.setValidationResult(result);
 		geoFenceTO = geoFenceService.createGeoFence(geoFenceTO);
 		map.put("geofence", geoFenceTO);
@@ -43,7 +43,7 @@ public class GeoFenceController extends BaseController {
 	}
 
 	@RequestMapping(value = "/view", method = RequestMethod.GET)
-	public @ResponseBody Set<GeoFenceTO> view() {
+	public @ResponseBody Set<GeoFenceTO> viewAllGeoFences() {
 		return geoFenceService.fetchAllGeoFences();
 	}
 

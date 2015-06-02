@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface GeoFenceRepository extends BaseRepository<GeoFence, Long> {
 
-	// Find all videos with a matching name (e.g., Video.name)
 	public GeoFence findByCode(String code);
 
 }

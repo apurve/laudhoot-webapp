@@ -2,10 +2,8 @@ package laudhoot.core.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Entity;
 import javax.persistence.Lob;
 
-@Entity
 @Embeddable
 public class GenericParameter extends BaseDomain {
 
