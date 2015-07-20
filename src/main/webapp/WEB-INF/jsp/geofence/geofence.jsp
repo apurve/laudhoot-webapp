@@ -21,6 +21,7 @@
 			RADIUS (MTR) : <form:input path="radiusInMeters" />
 		<form:errors path="radiusInMeters" cssClass="error" />
 		<br />
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<input type="submit" value="Add Geofence" />
 	</form:form>
 </c:if>

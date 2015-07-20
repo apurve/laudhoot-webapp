@@ -8,6 +8,7 @@ buildscript {
   ext{
   	springFramework = '4.1.1.RELEASE'
     springSecurity = '3.2.0.RELEASE'
+    springSecurityOauth = '2.0.7.RELEASE'
     springDataJPA = '1.7.0.RELEASE'
   	hibernate = '4.3.6.Final'
     mysqlConnector = '5.1.18'
@@ -42,6 +43,8 @@ dependencies {
 	compile "org.springframework.security:spring-security-web:$springSecurity"
   	compile "org.springframework.security:spring-security-core:$springSecurity"
   	compile "org.springframework.security:spring-security-config:$springSecurity"
+	
+	compile "org.springframework.security.oauth:spring-security-oauth2:$springSecurityOauth"
 	
 	compile "org.springframework.data:spring-data-jpa:$springDataJPA"
 	
