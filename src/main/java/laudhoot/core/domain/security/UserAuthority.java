@@ -1,5 +1,6 @@
 package laudhoot.core.domain.security;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import laudhoot.core.domain.BaseDomain;
@@ -14,9 +15,8 @@ public class UserAuthority extends BaseDomain implements GrantedAuthority {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@Column(unique=true)
 	private String authority;
-	
-	
 	
 	public UserAuthority() {
 		super();

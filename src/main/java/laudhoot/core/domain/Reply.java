@@ -1,8 +1,6 @@
 package laudhoot.core.domain;
 
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 
 import laudhoot.web.domain.ReplyTO;
 

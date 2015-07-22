@@ -9,8 +9,10 @@ import laudhoot.config.core.security.CustomAccessDeniedHandler;
 import laudhoot.config.core.security.CustomAuthenticationFailureHandler;
 import laudhoot.config.core.security.CustomLogoutSuccessHandler;
 import laudhoot.config.core.security.CustomSavedRequestAwareAuthenticationSuccessHandler;
+import laudhoot.core.domain.security.UserAuthority;
+import laudhoot.core.repository.security.UserAuthorityRepository;
 import laudhoot.core.services.UserInfoService;
-import laudhoot.core.services.security.UserDetailsServieImpl;
+import laudhoot.core.services.security.UserServieImpl;
 import laudhoot.web.domain.UserInfoTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private UserInfoService userInfoService;
 	
 	@Autowired
+	private UserAuthorityRepository userAuthorityRepository;
+	
+	@Autowired
 	protected void globalUserDetails(AuthenticationManagerBuilder auth)
 			throws Exception {
 		ShaPasswordEncoder encoder = new ShaPasswordEncoder();
@@ -51,6 +56,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		auth
 			.userDetailsService(userDetailsService)
 			/*.passwordEncoder(encoder)*/;
+		
+		if(userAuthorityRepository.count() < 1) {
+			UserAuthority authority = new UserAuthority("USER");
+			userAuthorityRepository.save(authority);
+			authority = new UserAuthority("ADMIN"); 
+			userAuthorityRepository.save(authority);
+		}
 		
 		if(userInfoService.availableUsers() < 1){
 			Set<String> authorities = new HashSet<String>();

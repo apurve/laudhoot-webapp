@@ -3,6 +3,7 @@ package laudhoot.core.domain.security;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 
@@ -11,17 +12,22 @@ import laudhoot.web.domain.UserInfoTO;
 
 @Entity
 public class UserInfo extends BaseDomain {
+	
+	@Column(unique=true)
+	private String username;
 
 	private String password;
-	private String username;
+	
 	@ManyToMany
 	private Set<UserAuthority> authorities;
+	
 	private boolean accountNonExpired;
+	
 	private boolean accountNonLocked;
+	
 	private boolean credentialsNonExpired;
+	
 	private boolean enabled;
-	
-	
 
 	public UserInfo() {
 		super();
@@ -45,9 +51,6 @@ public class UserInfo extends BaseDomain {
 		this.password = userInfoTO.getPassword();
 		this.username = userInfoTO.getUsername();
 		this.authorities = new HashSet<UserAuthority>();
-		for (String userAuthority : userInfoTO.getAuthorities()) {
-			this.authorities.add(new UserAuthority(userAuthority));
-		}
 		this.accountNonExpired = userInfoTO.isAccountNonExpired();
 		this.accountNonLocked = userInfoTO.isAccountNonLocked();
 		this.credentialsNonExpired = userInfoTO.isCredentialsNonExpired();

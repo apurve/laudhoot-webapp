@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 @Service
-public class UserDetailsServieImpl implements UserDetailsService, UserInfoService {
+public class UserServieImpl implements UserDetailsService, UserInfoService {
 
 	@Autowired
 	private UserInfoRepository userRepository;
@@ -57,6 +57,23 @@ public class UserDetailsServieImpl implements UserDetailsService, UserInfoServic
 			throw new UsernameNotFoundException("the user could not be found");
 		}
 	}
+	
+	@Override @Transactional
+	public UserInfo loadUserInfoByUsername(String username) throws UsernameNotFoundException {
+		UserInfo userInfo = userRepository.findByUsername(username);
+		if (userInfo != null) {
+			if (CollectionUtils.isEmpty(userInfo.getAuthorities())) {
+				throw new UsernameNotFoundException("the user has no granted authority(s)");
+			} else {
+				for(UserAuthority authority : userInfo.getAuthorities()){
+					authority.getAuthority();
+				}
+				return userInfo;
+			}
+		} else {
+			throw new UsernameNotFoundException("the user could not be found");
+		}
+	}
 
 	@Override
 	public UserInfoTO createUserInfo(UserInfoTO userInfoTO) {
@@ -68,7 +85,9 @@ public class UserDetailsServieImpl implements UserDetailsService, UserInfoServic
 			return userInfoTO;
 		}
 		UserInfo userInfo = new UserInfo(userInfoTO);
-		userAuthorityRepository.save(userInfo.getAuthorities());
+		for(String authority : userInfoTO.getAuthorities()) {
+			userInfo.getAuthorities().add(userAuthorityRepository.findByAuthority(authority));
+		}
 		userRepository.save(userInfo);
 		return new UserInfoTO(userInfo);
 	}

@@ -62,7 +62,7 @@ public class LaudhootValidatorImpl implements InitializingBean,
 			String propertyPath = constraintViolation.getPropertyPath()
 					.toString();
 			String message = constraintViolation.getMessage();
-			logger.info("Data Integrity Violation - " + message + "" + propertyPath + constraintViolation.getConstraintDescriptor().getGroups());
+			logger.info("Data Integrity Violation - " + propertyPath + " - " + message + " - " + constraintViolation.getConstraintDescriptor().getGroups());
 			errors.rejectValue(propertyPath, "", message);
 		}
 	}

@@ -13,6 +13,8 @@ import laudhoot.core.util.validation.LaudhootExceptionUtils;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 
 /**
  * A base class for all other classes which needs to be persisted in a database, 
@@ -24,8 +26,6 @@ import org.joda.time.DateTime;
 @MappedSuperclass
 public abstract class BaseDomain {
 	
-	//TODO - createdBy and updatedBy
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -37,6 +37,10 @@ public abstract class BaseDomain {
 	@Column(columnDefinition = "TIMESTAMP", insertable = true, updatable = true)
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime updatedOn;
+	
+	private String createdBy;
+	
+	private String updatedBy;
 
 	Integer archiveStatus;
 
@@ -54,13 +58,28 @@ public abstract class BaseDomain {
 	void onCreate() {
 		this.setCreatedOn(DateTime.now());
 		this.setUpdatedOn(null);
+		String createdByUsername = getUserName();
+		this.setCreatedBy(LaudhootExceptionUtils.isNotEmpty(createdByUsername) ? createdByUsername : "system-generated");
+		this.setUpdatedBy(null);
 	}
 
 	@PreUpdate
 	void onPersist() {
 		this.setUpdatedOn(DateTime.now());
+		String updatedByUsername = getUserName();
+		this.setUpdatedBy(LaudhootExceptionUtils.isNotEmpty(updatedByUsername) ? updatedByUsername : "system-updated");
 	}
-
+	
+	private String getUserName() {
+		if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof User) {
+			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if(user != null) {
+				return user.getUsername();
+			}
+		}
+		return null;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -85,6 +104,22 @@ public abstract class BaseDomain {
 		this.updatedOn = updatedOn;
 	}
 	
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
 	public Integer getArchiveStatus() {
 		return archiveStatus;
 	}
