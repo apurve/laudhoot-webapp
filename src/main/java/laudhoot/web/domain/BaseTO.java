@@ -9,12 +9,14 @@ import javax.validation.constraints.Null;
 import org.springframework.context.MessageSource;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 
 public class BaseTO {
 	@Null(groups={ServiceRequest.CreateGeoFence.class})
 	@NotNull(groups={ServiceResponse.class, ServiceRequest.class})
 	Long id;
+	
+	@NotNull(groups={ServiceResponse.class, ServiceRequest.class})
+	String username;
 	
 	/**
 	 * The result is passed from the controller to the service where validation is performed
@@ -22,20 +24,27 @@ public class BaseTO {
 	 * of the passed objects so that validation results are available in the controller by using
 	 * the same reference.
 	 * */
-	BindingResult validationResult;
+	BindingResult validation;
 	
 	boolean error;
 	
 	Map<String, String> errorMessages;
-
+	
 	public BaseTO() {
 		super();
 	}
 
-	public BaseTO(Long id, BindingResult validationResult) {
+	public BaseTO(Long id, BindingResult validation) {
 		super();
 		this.id = id;
-		this.validationResult = validationResult;
+		this.validation = validation;
+	}
+	
+	public BaseTO(Long id, String username, BindingResult validation) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.validation = validation;
 	}
 
 	public Long getId() {
@@ -45,13 +54,33 @@ public class BaseTO {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public BindingResult getValidationResult() {
-		return validationResult;
+	
+	public String getUsername() {
+		return username;
 	}
 
-	public void setValidationResult(BindingResult validationResult) {
-		this.validationResult = validationResult;
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public Map<String, String> getErrorMessages() {
+		return errorMessages;
+	}
+
+	public void setErrorMessages(Map<String, String> errorMessages) {
+		this.errorMessages = errorMessages;
+	}
+
+	public boolean isError() {
+		return error;
+	}
+
+	public BindingResult getValidation() {
+		return validation;
+	}
+
+	public void setValidation(BindingResult validation) {
+		this.validation = validation;
 	}
 
 	public boolean hasError() {
@@ -67,9 +96,9 @@ public class BaseTO {
 	}
 
 	public void prepareMobileResponce(MessageSource messageSource){
-		this.error = validationResult.hasErrors();
+		this.error = validation.hasErrors();
 		errorMessages = new HashMap<String, String>();
-		for(FieldError fieldError : validationResult.getFieldErrors()) {
+		for(FieldError fieldError : validation.getFieldErrors()) {
 			errorMessages.put(fieldError.getField(), messageSource.getMessage(fieldError, null));
 		}
 	}

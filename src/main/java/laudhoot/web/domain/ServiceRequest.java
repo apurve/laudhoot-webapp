@@ -8,4 +8,5 @@ public interface ServiceRequest {
 	
 	interface CreateReply {	}
 
+	interface CreateUser { }
 }

@@ -35,7 +35,7 @@ public class ShoutController extends BaseRestController {
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public ShoutTO createShout(@ModelAttribute("shout") ShoutTO shoutTO, BindingResult result) {
-		shoutTO.setValidationResult(result);
+		shoutTO.setValidation(result);
 		shoutTO = shoutService.createShout(shoutTO);
 		shoutTO.prepareMobileResponce(messageSource);
 		return shoutTO;
@@ -43,7 +43,7 @@ public class ShoutController extends BaseRestController {
 	
 	@RequestMapping(value = "/reply/create", method = RequestMethod.POST)
 	public ReplyTO createRepy(@ModelAttribute("reply") ReplyTO replyTO, BindingResult result) {
-		replyTO.setValidationResult(result);
+		replyTO.setValidation(result);
 		replyTO = shoutService.createReply(replyTO);
 		replyTO.prepareMobileResponce(messageSource);
 		return replyTO;
