@@ -2,7 +2,7 @@ package laudhoot.config.core;
 
 import javax.sql.DataSource;
 
-import laudhoot.config.core.security.CustomUserApprovalHandler;
+import laudhoot.config.web.security.CustomUserApprovalHandler;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,6 +21,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
@@ -28,20 +29,19 @@ import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
 import org.springframework.security.oauth2.provider.approval.UserApprovalHandler;
 import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
 /**
  * OAuth 2.0 security configuration.
  * 
  * @author apurve
  */
-//@Configuration
+@Configuration
 public class OAuth2SecutiryConfig {
 
 	private static final String LAUDHOOT_RESOURCE_ID = "laudhoot";
-
-	//@Configuration
-	//@EnableResourceServer
+	
+	@Configuration
+	@EnableResourceServer
 	protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
 		@Override
@@ -55,7 +55,7 @@ public class OAuth2SecutiryConfig {
 			http
 				// Since we want the protected resources to be accessible in the UI as well we need 
 				// session creation to be allowed (it's disabled by default in 2.0.6)
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
 				.requestMatchers().antMatchers("/shout/**")
 			.and()
@@ -70,8 +70,8 @@ public class OAuth2SecutiryConfig {
 
 	}
 
-	//@Configuration
-	//@EnableAuthorizationServer
+	@Configuration
+	@EnableAuthorizationServer
 	protected static class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
 		@Autowired
@@ -89,43 +89,41 @@ public class OAuth2SecutiryConfig {
 
 		@Value("http://localhost:8080/laudhoot/oauth/redirect")
 		private String laudhootRedirectUri;
+		
+		@Autowired
+		private ClientDetailsService clientDetailsService;
 
 		@Override
 		public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 			// @formatter:off
 			clients.jdbc(dataSource).withClient("laudhoot-app")
 			 			.resourceIds(LAUDHOOT_RESOURCE_ID)
-			 			.authorizedGrantTypes("password", "implicit")
+			 			.authorizedGrantTypes("password", "client_credentials")
 			 			.authorities("ROLE_CLIENT")
 			 			.scopes("read", "write")
 			 			.secret("secret")
-			 			.autoApprove(true)
+			 			.autoApprove(false)
 			 			.redirectUris(laudhootRedirectUri)
 			 			.accessTokenValiditySeconds(600)
 			 			.refreshTokenValiditySeconds(6000);
 			// @formatter:on
 		}
 
-		@Bean
-		public TokenStore tokenStore() {
-			return new JdbcTokenStore(dataSource);
-		}
-
 		@Override
 		public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 			endpoints.tokenStore(tokenStore).userApprovalHandler(userApprovalHandler)
-					.authenticationManager(authenticationManager);
+					.authenticationManager(authenticationManager).setClientDetailsService(clientDetailsService);
 		}
 
-		/*@Override
+		@Override
 		public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
 			oauthServer.realm("laudhoot/client");
-		}*/
-
+		}
+		
 	}
-
+	
 	protected static class Stuff {
-
+		
 		@Autowired
 		private ClientDetailsService clientDetailsService;
 

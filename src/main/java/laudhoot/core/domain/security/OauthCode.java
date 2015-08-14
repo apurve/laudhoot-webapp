@@ -2,28 +2,17 @@ package laudhoot.core.domain.security;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Lob;
 
-@Entity
-public class OauthCode {
+import laudhoot.core.domain.BaseDomain;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	
+@Entity
+public class OauthCode extends BaseDomain {
+
 	private String code;
 	@Lob @Column(length=100000)
 	private byte[] authentication;
 	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
 	public String getCode() {
 		return code;
 	}

@@ -1,10 +1,9 @@
-package laudhoot.core.services;
+package laudhoot.core.services.security;
 
 import laudhoot.core.domain.security.UserInfo;
 import laudhoot.web.domain.UserInfoTO;
 
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public interface UserInfoService {

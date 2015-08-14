@@ -1,4 +1,4 @@
-package laudhoot.config.core.security;
+package laudhoot.config.web.security;
 
 import java.io.IOException;
 

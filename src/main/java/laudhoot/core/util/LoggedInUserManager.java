@@ -1,7 +1,7 @@
 package laudhoot.core.util;
 
 import laudhoot.core.domain.security.UserInfo;
-import laudhoot.core.services.UserInfoService;
+import laudhoot.core.services.security.UserInfoService;
 import laudhoot.core.util.validation.LaudhootExceptionUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,5 +1,6 @@
 package laudhoot.core.domain;
 
+import javax.naming.AuthenticationNotSupportedException;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +14,7 @@ import laudhoot.core.util.validation.LaudhootExceptionUtils;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 
@@ -71,8 +73,9 @@ public abstract class BaseDomain {
 	}
 	
 	private String getUserName() {
-		if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof User) {
-			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null && authentication.getPrincipal() instanceof User) {
+			User user = (User) authentication.getPrincipal();
 			if(user != null) {
 				return user.getUsername();
 			}

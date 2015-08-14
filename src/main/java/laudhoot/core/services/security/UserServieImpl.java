@@ -9,7 +9,6 @@ import laudhoot.core.domain.security.UserAuthority;
 import laudhoot.core.domain.security.UserInfo;
 import laudhoot.core.repository.security.UserAuthorityRepository;
 import laudhoot.core.repository.security.UserInfoRepository;
-import laudhoot.core.services.UserInfoService;
 import laudhoot.core.util.validation.LaudhootExceptionUtils;
 import laudhoot.core.util.validation.LaudhootValidator;
 import laudhoot.web.domain.ServiceRequest;
