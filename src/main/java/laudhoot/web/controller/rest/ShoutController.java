@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Transactional
 @RestController
-@RequestMapping("/shout")
+@RequestMapping("/rest/shout")
 public class ShoutController extends BaseRestController {
 
 	@Autowired

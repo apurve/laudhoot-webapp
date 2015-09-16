@@ -59,16 +59,12 @@ public class OAuth2SecutiryConfig {
 			http
 				// Since we want the protected resources to be accessible in the UI as well we need 
 				// session creation to be allowed (it's disabled by default in 2.0.6)
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
-				.requestMatchers().antMatchers("/shout/**")
-			.and()
-				.requestMatchers().antMatchers("/oauth/users/**")
-			.and()
-				.requestMatchers().antMatchers("/oauth/clients/**")
+				.requestMatchers().antMatchers("/rest/**")
 			.and()
 				.authorizeRequests()
-					.antMatchers("/shout/**").access("#oauth2.hasScope('read') or (!#oauth2.isOAuth() and hasRole('ROLE_USER'))");
+					.antMatchers("/rest/**").access("#oauth2.hasScope('read') or (!#oauth2.isOAuth() and hasRole('ROLE_USER'))");
 			
 			// @formatter:on
 		}

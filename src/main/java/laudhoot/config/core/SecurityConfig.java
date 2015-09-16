@@ -45,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	protected void globalUserDetails(AuthenticationManagerBuilder auth)
 			throws Exception {
-		// TODO - encoded password in database
+		// TODO - encoded password in database and default user creation logic
 		ShaPasswordEncoder encoder = new ShaPasswordEncoder();
 		auth
 			.userDetailsService(userDetailsService)
