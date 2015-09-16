@@ -4,6 +4,7 @@ package laudhoot.web.domain;
 import laudhoot.core.domain.Coordinate;
 import laudhoot.core.util.validation.Latitude;
 import laudhoot.core.util.validation.Longitude;
+import laudhoot.web.util.ServiceRequest;
 
 public class CoordinateTO extends BaseTO {
 	

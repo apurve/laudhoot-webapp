@@ -1,14 +1,11 @@
-package laudhoot.core.domain;
+package laudhoot.core.domain.rest;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.Lob;
+import javax.persistence.MappedSuperclass;
 
-@Entity
-@Inheritance(strategy=InheritanceType.JOINED)
-public class Post extends BaseDomain {
+@MappedSuperclass
+public abstract class Post extends BaseRestDomain {
 	
 	@Lob
 	@Column(length = 500)
@@ -17,6 +14,10 @@ public class Post extends BaseDomain {
 	private Long laudCount;
 
 	private Long hootCount;
+	
+	public Post() {
+		super();
+	}
 	
 	public Post(String message) {
 		super();
@@ -50,16 +51,8 @@ public class Post extends BaseDomain {
 		return laudCount;
 	}
 
-	public void setLaudCount(Long laudCount) {
-		this.laudCount = laudCount;
-	}
-
 	public Long getHootCount() {
 		return hootCount;
 	}
 
-	public void setHootCount(Long hootCount) {
-		this.hootCount = hootCount;
-	}
-	
 }

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import laudhoot.core.domain.GeoFence;
-import laudhoot.core.domain.Reply;
-import laudhoot.core.domain.Shout;
+import laudhoot.core.domain.rest.Reply;
+import laudhoot.core.domain.rest.Shout;
 import laudhoot.core.repository.GeoFenceRepository;
 import laudhoot.core.repository.ReplyRepository;
 import laudhoot.core.repository.ShoutRepository;
@@ -13,8 +13,8 @@ import laudhoot.core.util.validation.LaudhootExceptionUtils;
 import laudhoot.core.util.validation.LaudhootValidator;
 import laudhoot.web.domain.CoordinateTO;
 import laudhoot.web.domain.ReplyTO;
-import laudhoot.web.domain.ServiceRequest;
 import laudhoot.web.domain.ShoutTO;
+import laudhoot.web.util.ServiceRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

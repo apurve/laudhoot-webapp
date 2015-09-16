@@ -2,6 +2,10 @@ package laudhoot.config.core;
 
 import javax.sql.DataSource;
 
+import laudhoot.config.web.security.CustomAccessDeniedHandler;
+import laudhoot.config.web.security.CustomAuthenticationFailureHandler;
+import laudhoot.config.web.security.CustomLogoutSuccessHandler;
+import laudhoot.config.web.security.CustomSavedRequestAwareAuthenticationSuccessHandler;
 import laudhoot.config.web.security.CustomUserApprovalHandler;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +59,7 @@ public class OAuth2SecutiryConfig {
 			http
 				// Since we want the protected resources to be accessible in the UI as well we need 
 				// session creation to be allowed (it's disabled by default in 2.0.6)
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
 			.and()
 				.requestMatchers().antMatchers("/shout/**")
 			.and()
@@ -64,7 +68,8 @@ public class OAuth2SecutiryConfig {
 				.requestMatchers().antMatchers("/oauth/clients/**")
 			.and()
 				.authorizeRequests()
-					.antMatchers("/shout").access("#oauth2.hasScope('read') or (!#oauth2.isOAuth() and hasRole('ROLE_USER'))");
+					.antMatchers("/shout/**").access("#oauth2.hasScope('read') or (!#oauth2.isOAuth() and hasRole('ROLE_USER'))");
+			
 			// @formatter:on
 		}
 
@@ -96,7 +101,7 @@ public class OAuth2SecutiryConfig {
 		@Override
 		public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 			// @formatter:off
-			clients.jdbc(dataSource).withClient("laudhoot-app")
+			clients.jdbc(dataSource)/*.withClient("laudhoot-app")
 			 			.resourceIds(LAUDHOOT_RESOURCE_ID)
 			 			.authorizedGrantTypes("password", "client_credentials")
 			 			.authorities("ROLE_CLIENT")
@@ -105,7 +110,7 @@ public class OAuth2SecutiryConfig {
 			 			.autoApprove(false)
 			 			.redirectUris(laudhootRedirectUri)
 			 			.accessTokenValiditySeconds(600)
-			 			.refreshTokenValiditySeconds(6000);
+			 			.refreshTokenValiditySeconds(6000)*/;
 			// @formatter:on
 		}
 

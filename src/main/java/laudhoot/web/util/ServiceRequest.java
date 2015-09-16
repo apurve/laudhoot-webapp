@@ -1,4 +1,4 @@
-package laudhoot.web.domain;
+package laudhoot.web.util;
 
 public interface ServiceRequest {
 

@@ -1,4 +1,4 @@
-package laudhoot.core.domain;
+package laudhoot.core.domain.rest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import laudhoot.core.domain.GeoFence;
 import laudhoot.web.domain.ReplyTO;
 import laudhoot.web.domain.ShoutTO;
 
@@ -24,6 +25,10 @@ public class Shout extends Post {
 
 	@OneToMany
 	List<Reply> replies;
+	
+	public Shout() {
+		super();
+	}
 
 	public Shout(String message, GeoFence geoFence) {
 		super(message);

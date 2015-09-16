@@ -1,4 +1,4 @@
-package laudhoot.core.domain;
+package laudhoot.core.domain.rest;
 
 import javax.persistence.Entity;
 
@@ -13,6 +13,10 @@ import laudhoot.web.domain.ReplyTO;
 @Entity
 public class Reply extends Post {
 	
+	public Reply() {
+		super();
+	}
+
 	public Reply(String message) {
 		super(message);
 	}

@@ -6,6 +6,9 @@ import java.util.Map;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
+import laudhoot.web.util.ServiceRequest;
+import laudhoot.web.util.ServiceResponse;
+
 import org.springframework.context.MessageSource;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;

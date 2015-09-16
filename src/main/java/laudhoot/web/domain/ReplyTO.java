@@ -6,7 +6,9 @@ import javax.validation.constraints.Null;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import laudhoot.core.domain.Reply;
+import laudhoot.core.domain.rest.Reply;
+import laudhoot.web.util.ServiceRequest;
+import laudhoot.web.util.ServiceResponse;
 
 public class ReplyTO extends BaseTO {
 

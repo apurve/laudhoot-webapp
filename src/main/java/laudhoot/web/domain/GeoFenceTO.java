@@ -6,6 +6,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import laudhoot.core.domain.GeoFence;
+import laudhoot.web.util.ServiceRequest;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;

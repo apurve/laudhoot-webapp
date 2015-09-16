@@ -11,8 +11,8 @@ import laudhoot.core.repository.security.UserAuthorityRepository;
 import laudhoot.core.repository.security.UserInfoRepository;
 import laudhoot.core.util.validation.LaudhootExceptionUtils;
 import laudhoot.core.util.validation.LaudhootValidator;
-import laudhoot.web.domain.ServiceRequest;
 import laudhoot.web.domain.UserInfoTO;
+import laudhoot.web.util.ServiceRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

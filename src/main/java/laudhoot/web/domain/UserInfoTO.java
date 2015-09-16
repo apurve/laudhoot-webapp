@@ -10,6 +10,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import laudhoot.core.domain.security.UserAuthority;
 import laudhoot.core.domain.security.UserInfo;
+import laudhoot.web.util.ServiceRequest;
+import laudhoot.web.util.ServiceResponse;
 
 public class UserInfoTO extends BaseTO {
 	

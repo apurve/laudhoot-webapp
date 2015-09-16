@@ -1,6 +1,5 @@
 package laudhoot.core.domain;
 
-import javax.naming.AuthenticationNotSupportedException;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -57,7 +56,7 @@ public abstract class BaseDomain {
 	}
 
 	@PrePersist
-	void onCreate() {
+	protected void onCreate() {
 		this.setCreatedOn(DateTime.now());
 		this.setUpdatedOn(null);
 		String createdByUsername = getUserName();
@@ -66,7 +65,7 @@ public abstract class BaseDomain {
 	}
 
 	@PreUpdate
-	void onPersist() {
+	protected void onPersist() {
 		this.setUpdatedOn(DateTime.now());
 		String updatedByUsername = getUserName();
 		this.setUpdatedBy(LaudhootExceptionUtils.isNotEmpty(updatedByUsername) ? updatedByUsername : "system-updated");

@@ -2,15 +2,20 @@ package laudhoot.core.domain.security;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-
-import laudhoot.core.domain.BaseDomain;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 @Entity
-public class OauthApprovals extends BaseDomain {
+public class OauthApprovals {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	
 	private String userid;
 	private String clientid;
 	private String scope;
@@ -23,6 +28,14 @@ public class OauthApprovals extends BaseDomain {
 	@Column(columnDefinition = "TIMESTAMP", insertable = true, updatable = true)
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime lastmodifiedat;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getUserid() {
 		return userid;

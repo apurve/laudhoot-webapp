@@ -13,7 +13,7 @@ import laudhoot.core.util.validation.LaudhootExceptionUtils;
 import laudhoot.core.util.validation.LaudhootValidator;
 import laudhoot.web.domain.CoordinateTO;
 import laudhoot.web.domain.GeoFenceTO;
-import laudhoot.web.domain.ServiceRequest;
+import laudhoot.web.util.ServiceRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

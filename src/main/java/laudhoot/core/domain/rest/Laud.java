@@ -1,4 +1,5 @@
-package laudhoot.core.domain;
+package laudhoot.core.domain.rest;
+
 
 /**
  * The domain for persisting a laud.
@@ -6,7 +7,7 @@ package laudhoot.core.domain;
  * @author apurve
  */
 
-public class Laud extends BaseDomain {
+public class Laud extends BaseRestDomain {
 	
 	Post post;
 
