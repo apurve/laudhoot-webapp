@@ -14,6 +14,8 @@ import org.joda.time.Hours;
 
 public class GeoFenceTO extends BaseTO {
 	
+	private static final long serialVersionUID = 7902465377368068826L;
+
 	private String name;
 	
 	@NotEmpty(groups={ServiceRequest.CreateGeoFence.class})

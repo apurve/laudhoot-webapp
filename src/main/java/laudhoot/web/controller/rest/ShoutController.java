@@ -7,7 +7,6 @@ import laudhoot.web.domain.ReplyTO;
 import laudhoot.web.domain.ShoutTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,29 +22,25 @@ public class ShoutController extends BaseRestController {
 
 	@Autowired
 	ShoutService shoutService;
-	
-	@Autowired
-	MessageSource messageSource;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public List<ShoutTO> listShoutsOfGeoFence(
-			@RequestParam("geoFenceCode") String geoFenceCode) {
+	public List<ShoutTO> listShoutsOfGeoFence(@RequestParam("geoFenceCode") String geoFenceCode) {
 		return shoutService.getShoutsFromGeoFence(geoFenceCode);
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public ShoutTO createShout(@ModelAttribute("shout") ShoutTO shoutTO, BindingResult result) {
-		shoutTO.setValidation(result);
+	public ShoutTO createShout(@ModelAttribute ShoutTO shoutTO, BindingResult result) {
+		shoutTO.validation = result;
 		shoutTO = shoutService.createShout(shoutTO);
-		shoutTO.prepareMobileResponce(messageSource);
+		shoutTO.populateValidatonErrors();
 		return shoutTO;
 	}
 	
 	@RequestMapping(value = "/reply/create", method = RequestMethod.POST)
-	public ReplyTO createRepy(@ModelAttribute("reply") ReplyTO replyTO, BindingResult result) {
-		replyTO.setValidation(result);
+	public ReplyTO createRepy(@ModelAttribute ReplyTO replyTO, BindingResult result) {
+		replyTO.validation = result;
 		replyTO = shoutService.createReply(replyTO);
-		replyTO.prepareMobileResponce(messageSource);
+		replyTO.populateValidatonErrors();
 		return replyTO;
 	}
 	

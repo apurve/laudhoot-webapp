@@ -2,10 +2,6 @@ package laudhoot.config.core;
 
 import javax.sql.DataSource;
 
-import laudhoot.config.web.security.CustomAccessDeniedHandler;
-import laudhoot.config.web.security.CustomAuthenticationFailureHandler;
-import laudhoot.config.web.security.CustomLogoutSuccessHandler;
-import laudhoot.config.web.security.CustomSavedRequestAwareAuthenticationSuccessHandler;
 import laudhoot.config.web.security.CustomUserApprovalHandler;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +38,12 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 @Configuration
 public class OAuth2SecutiryConfig {
 
-	private static final String LAUDHOOT_RESOURCE_ID = "laudhoot";
+	public static final String LAUDHOOT_RESOURCE_ID = "laudhoot";
+	public static final String GRANT_TYPE_CLIENT = "client_credentials";
+	public static final String GRANT_TYPE_PASSWORD = "password";
+	public static final int ACCESS_TOKEN_VALIDITY_SECONDS = 6000;
+	public static final int REFRESH_TOKEN_VALIDITY_SECONDS = 600000;
+	
 	
 	@Configuration
 	@EnableResourceServer
@@ -63,6 +64,9 @@ public class OAuth2SecutiryConfig {
 			.and()
 				.requestMatchers().antMatchers("/rest/**")
 			.and()
+				.authorizeRequests()
+					.antMatchers("/rest/client/registration").permitAll()
+				.and()
 				.authorizeRequests()
 					.antMatchers("/rest/**").access("#oauth2.hasScope('read') or (!#oauth2.isOAuth() and hasRole('ROLE_USER'))");
 			
@@ -99,14 +103,14 @@ public class OAuth2SecutiryConfig {
 			// @formatter:off
 			clients.jdbc(dataSource)/*.withClient("laudhoot-app")
 			 			.resourceIds(LAUDHOOT_RESOURCE_ID)
-			 			.authorizedGrantTypes("password", "client_credentials")
+			 			.authorizedGrantTypes(GRANT_TYPE_PASSWORD, GRANT_TYPE_CLIENT)
 			 			.authorities("ROLE_CLIENT")
 			 			.scopes("read", "write")
 			 			.secret("secret")
 			 			.autoApprove(false)
 			 			.redirectUris(laudhootRedirectUri)
-			 			.accessTokenValiditySeconds(600)
-			 			.refreshTokenValiditySeconds(6000)*/;
+			 			.accessTokenValiditySeconds(ACCESS_TOKEN_VALIDITY_SECONDS)
+			 			.refreshTokenValiditySeconds(REFRESH_TOKEN_VALIDITY_SECONDS)*/;
 			// @formatter:on
 		}
 

@@ -9,4 +9,6 @@ public interface ServiceRequest {
 	interface CreateReply {	}
 
 	interface CreateUser { }
+	
+	interface CreateClient { }
 }

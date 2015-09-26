@@ -78,9 +78,9 @@ public class UserServieImpl implements UserDetailsService, UserInfoService {
 	public UserInfoTO createUserInfo(UserInfoTO userInfoTO) {
 		LaudhootExceptionUtils.isNotNull(userInfoTO,
 				"UserInfo cannot be null.");
-		validator.validate(userInfoTO, userInfoTO.getValidation(),
+		validator.validate(userInfoTO, userInfoTO.validation,
 				ServiceRequest.CreateGeoFence.class);
-		if (userInfoTO.getValidation() != null && userInfoTO.getValidation().hasErrors()) {
+		if (userInfoTO.validation != null && userInfoTO.validation.hasErrors()) {
 			return userInfoTO;
 		}
 		UserInfo userInfo = new UserInfo(userInfoTO);
