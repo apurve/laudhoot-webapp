@@ -79,9 +79,9 @@ dependencies {
 	compile "org.projectreactor:reactor-core:$reactor"
 	compile "org.projectreactor.spring:reactor-spring-context:$reactor"
 	
-  	runtime "com.fasterxml.jackson.core:jackson-core:$jackson"
-  	runtime "com.fasterxml.jackson.core:jackson-databind:$jackson"
-  	runtime "javax.xml.bind:jaxb-api:2.2.9"
+  	compile "com.fasterxml.jackson.core:jackson-core:$jackson"
+  	compile "com.fasterxml.jackson.core:jackson-databind:$jackson"
+  	compile "javax.xml.bind:jaxb-api:2.2.9"
 
   	testCompile "com.jayway.jsonpath:json-path-assert:0.8.1"
   	testCompile "org.springframework:spring-test:3.2.3.RELEASE"

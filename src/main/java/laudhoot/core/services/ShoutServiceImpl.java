@@ -38,9 +38,9 @@ public class ShoutServiceImpl implements ShoutService {
 	@Override
 	public ShoutTO createShout(ShoutTO shoutTO) {
 		LaudhootExceptionUtils.isNotNull(shoutTO, "Shout cannot be null.");
-		validator.validate(shoutTO, shoutTO.validation,
+		validator.validate(shoutTO, shoutTO.getValidation(),
 				ServiceRequest.CreateShout.class);
-		if (shoutTO.validation.hasErrors()) {
+		if (shoutTO.getValidation().hasErrors()) {
 			return shoutTO;
 		}
 		Shout shout = new Shout(shoutTO, geoFenceRepository.findByCode(shoutTO
@@ -52,9 +52,9 @@ public class ShoutServiceImpl implements ShoutService {
 	@Override
 	public ReplyTO createReply(ReplyTO replyTO) {
 		LaudhootExceptionUtils.isNotNull(replyTO, "Reply cannot be null.");
-		validator.validate(replyTO, replyTO.validation,
+		validator.validate(replyTO, replyTO.getValidation(),
 				ServiceRequest.CreateReply.class);
-		if (replyTO.validation.hasErrors()) {
+		if (replyTO.getValidation().hasErrors()) {
 			return replyTO;
 		}
 		Shout shout = shoutRepository.findOne(replyTO.getShoutId());

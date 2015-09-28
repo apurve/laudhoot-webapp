@@ -33,7 +33,7 @@ public class GeoFenceController extends BaseController {
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public String createGeoFence(ModelMap map, @ModelAttribute("geofence") GeoFenceTO geoFenceTO, BindingResult result) {
-		geoFenceTO.validation = result;
+		geoFenceTO.setValidation(result);
 		geoFenceTO = geoFenceService.createGeoFence(geoFenceTO);
 		map.put("geofence", geoFenceTO);
 		if (result.hasErrors()) {

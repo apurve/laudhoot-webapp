@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
@@ -14,10 +13,14 @@ import laudhoot.web.util.ServiceResponse;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+@JsonIgnoreProperties(value = {"serialVersionUID", "validation", "ERROR_KEY"})
 public abstract class BaseTO implements Serializable {
 	
-	@Transient
 	private transient static final long serialVersionUID = 3076569036610518006L;
 
 	@Null(groups={ServiceRequest.CreateGeoFence.class, ServiceRequest.CreateClient.class})
@@ -35,14 +38,13 @@ public abstract class BaseTO implements Serializable {
 	 * 
 	 * There should not be getter and setter for validation as JACKSON works on getters for serialization
 	 * */
-	@Transient
-	public transient BindingResult validation;
+	private transient BindingResult validation;
 	
 	private boolean error;
 	
+	@JsonInclude(Include.NON_EMPTY)
 	private Map<String, String> errorMessages;
 	
-	@Transient
 	public transient final static String ERROR_KEY = "error"; 
 	
 	public BaseTO() {
@@ -77,6 +79,14 @@ public abstract class BaseTO implements Serializable {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+	
+	public BindingResult getValidation() {
+		return validation;
+	}
+
+	public void setValidation(BindingResult validation) {
+		this.validation = validation;
+	}
 
 	public Map<String, String> getErrorMessages() {
 		return errorMessages;
@@ -98,6 +108,7 @@ public abstract class BaseTO implements Serializable {
 		this.error = error;
 	}
 
+	@JsonIgnore
 	public String getErrorMessage() {
 		return errorMessages.get(ERROR_KEY);
 	}

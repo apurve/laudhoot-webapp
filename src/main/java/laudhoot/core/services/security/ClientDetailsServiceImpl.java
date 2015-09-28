@@ -25,9 +25,9 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
 	public ClientTO createClient(ClientTO clientTo) {
 		LaudhootExceptionUtils.isNotNull(clientTo,
 				"Client details transfer object cannot be null.");
-		validator.validate(clientTo, clientTo.validation,
+		validator.validate(clientTo, clientTo.getValidation(),
 				ServiceRequest.CreateClient.class);
-		if (clientTo.validation.hasErrors()) {
+		if (clientTo.getValidation().hasErrors()) {
 			return clientTo;
 		}
 		

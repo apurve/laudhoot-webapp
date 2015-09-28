@@ -34,9 +34,9 @@ public class GeoFenceServiceImpl implements GeoFenceService {
 	public GeoFenceTO createGeoFence(GeoFenceTO geofenceTO) {
 		LaudhootExceptionUtils.isNotNull(geofenceTO,
 				"Geofence cannot be null.");
-		validator.validate(geofenceTO, geofenceTO.validation,
+		validator.validate(geofenceTO, geofenceTO.getValidation(),
 				ServiceRequest.CreateGeoFence.class);
-		if (geofenceTO.validation.hasErrors()) {
+		if (geofenceTO.getValidation().hasErrors()) {
 			return geofenceTO;
 		}
 		GeoFence geofence = new GeoFence(geofenceTO);
@@ -69,9 +69,9 @@ public class GeoFenceServiceImpl implements GeoFenceService {
 
 	@Override
 	public GeoFenceTO findGeoFence(CoordinateTO locationTO) {
-		validator.validate(locationTO, locationTO.validation,
+		validator.validate(locationTO, locationTO.getValidation(),
 				ServiceRequest.class);
-		if (locationTO.validation.hasErrors()) {
+		if (locationTO.getValidation().hasErrors()) {
 			return null;
 		}
 		// TODO - improve the algorithm to search for geoFence

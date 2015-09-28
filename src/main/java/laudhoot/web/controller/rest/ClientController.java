@@ -24,9 +24,9 @@ public class ClientController extends BaseRestController {
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
 	public ClientTO registerNewClient(@RequestBody ClientTO clientTO,
 			BindingResult result, HttpServletResponse response) {
-		clientTO.validation = result;
+		clientTO.setValidation(result);
 		clientTO = clientDetailsService.createClient(clientTO);
-		if (clientTO.validation.hasErrors()) {
+		if (clientTO.getValidation().hasErrors()) {
 			clientTO.populateValidatonErrors();
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
