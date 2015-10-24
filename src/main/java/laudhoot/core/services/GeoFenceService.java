@@ -23,6 +23,16 @@ public interface GeoFenceService {
 	public GeoFenceTO findGeoFence(CoordinateTO locationTO);
 	
 	/**
+	 * Find the geoFence in which provided GeoLocation lies and is not expired.
+	 * 
+	 * @param latitude - of the location to find in fences.
+	 * @param longitude - of the location to find in fences.
+	 * 
+	 * @return {@link GeoFence}
+	 * */
+	public GeoFenceTO findGeoFence(Double latitude, Double longitude);
+	
+	/**
 	 * Fetches a geoFence from database based on the provided code.
 	 * 
 	 * @param code - unique code of the geoFence
@@ -54,6 +64,6 @@ public interface GeoFenceService {
 	 * 
 	 * @return String - code of geoFence
 	 * */
-	String findGeoFenceCode(CoordinateTO locationTO);
+	public String findGeoFenceCode(CoordinateTO locationTO);
 
 }

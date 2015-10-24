@@ -41,7 +41,7 @@ public class OAuth2SecutiryConfig {
 	public static final String LAUDHOOT_RESOURCE_ID = "laudhoot";
 	public static final String GRANT_TYPE_CLIENT = "client_credentials";
 	public static final String GRANT_TYPE_PASSWORD = "password";
-	public static final int ACCESS_TOKEN_VALIDITY_SECONDS = 6000;
+	public static final int ACCESS_TOKEN_VALIDITY_SECONDS = 600000;
 	public static final int REFRESH_TOKEN_VALIDITY_SECONDS = 600000;
 	
 	

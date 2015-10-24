@@ -51,6 +51,7 @@ public final class ClientDetailsBuilder {
 				tempString = grantType;
 			else 
 				tempString = tempString + commaSepatator + grantType;
+			index++;
 		}
 		result.setAuthorizedGrantTypes(tempString);
 		
@@ -61,6 +62,7 @@ public final class ClientDetailsBuilder {
 				tempString = scope;
 			else 
 				tempString = tempString + commaSepatator + scope;
+			index++;
 		}
 		result.setScope(tempString);
 		
@@ -71,6 +73,7 @@ public final class ClientDetailsBuilder {
 				tempString = authority;
 			else 
 				tempString = tempString + commaSepatator + authority;
+			index++;
 		}
 		result.setAuthorities(tempString);
 		return result;

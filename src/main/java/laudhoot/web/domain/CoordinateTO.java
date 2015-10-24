@@ -8,6 +8,8 @@ import laudhoot.web.util.ServiceRequest;
 
 public class CoordinateTO extends BaseTO {
 	
+	private static final long serialVersionUID = 5756361205943290081L;
+
 	@Latitude(groups={ServiceRequest.CreateGeoFence.class, ServiceRequest.class})
 	private Double latitude;
 	
@@ -25,7 +27,7 @@ public class CoordinateTO extends BaseTO {
 	}
 	
 	public CoordinateTO(Coordinate geoLocation) {
-		super();
+		this.id = geoLocation.getId();
 		this.latitude = geoLocation.getLatitude();
 		this.longitude = geoLocation.getLongitude();
 	}

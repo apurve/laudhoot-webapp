@@ -15,6 +15,7 @@ import laudhoot.web.domain.CoordinateTO;
 import laudhoot.web.domain.GeoFenceTO;
 import laudhoot.web.util.ServiceRequest;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -78,10 +79,36 @@ public class GeoFenceServiceImpl implements GeoFenceService {
 		Coordinate location = new Coordinate(locationTO);
 		List<GeoFence> geoFences = (List<GeoFence>) fenceRepository.findAll();
 		for (GeoFence geoFence : geoFences) {
-			Double distanceFromCenter = CoordinateManager.distanceBetween(
-					geoFence.getCenter(), location);
-			if (distanceFromCenter > geoFence.getRadius()) {
-				return new GeoFenceTO(geoFence);
+			if (geoFence.getExpiresOn().isAfter(DateTime.now())) {
+				Double distanceFromCenter = CoordinateManager.distanceBetween(
+						geoFence.getCenter(), location);
+				if (distanceFromCenter < geoFence.getRadius()) {
+					return new GeoFenceTO(geoFence);
+				}
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	public GeoFenceTO findGeoFence(Double latitude, Double longitude) {
+		GeoFenceTO geoFenceTO = new GeoFenceTO();
+		if (latitude == null || longitude == null
+				|| !CoordinateManager.isValidLongitude(longitude)
+				|| !CoordinateManager.isValidLatitude(latitude)) {
+			geoFenceTO.setError(true);
+			return geoFenceTO;
+		}
+		// TODO - improve the algorithm to search for geoFence
+		Coordinate location = new Coordinate(latitude, longitude);
+		List<GeoFence> geoFences = (List<GeoFence>) fenceRepository.findAll();
+		for (GeoFence geoFence : geoFences) {
+			if (geoFence.getExpiresOn().isAfter(DateTime.now())) {
+				Double distanceFromCenter = CoordinateManager.distanceBetween(
+						geoFence.getCenter(), location);
+				if (distanceFromCenter < geoFence.getRadius()) {
+					return new GeoFenceTO(geoFence);
+				}
 			}
 		}
 		return null;
