@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -23,7 +24,7 @@ public class Shout extends Post {
 	@OneToOne
 	private GeoFence geoFence;
 
-	@OneToMany
+	@OneToMany(fetch=FetchType.EAGER)
 	List<Reply> replies;
 	
 	public Shout() {
@@ -40,8 +41,10 @@ public class Shout extends Post {
 		super.setId(shoutTO.getId());
 		this.geoFence = geoFence;
 		List<Reply> replies = new ArrayList<Reply>();
-		for (ReplyTO replyTO : shoutTO.getReplies()) {
-			replies.add(new Reply(replyTO));
+		if(shoutTO.getReplies() != null) {
+			for (ReplyTO replyTO : shoutTO.getReplies()) {
+				replies.add(new Reply(replyTO));
+			}
 		}
 		this.replies = replies;
 	}

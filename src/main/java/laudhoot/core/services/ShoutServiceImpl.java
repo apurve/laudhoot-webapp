@@ -91,6 +91,20 @@ public class ShoutServiceImpl implements ShoutService {
 		}
 		return shouts;
 	}
+	
+	@Override
+	public List<ShoutTO> getShoutsFromGeoFence(String geoFenceCode, Integer shoutsAvailable) {
+		List<ShoutTO> shouts = getShoutsFromGeoFence(geoFenceCode);
+		if (shouts != null && shoutsAvailable < shouts.size()) {
+			shouts = shouts.subList(shoutsAvailable, shouts.size());
+			if (shouts.size() > 10) {
+				return shouts.subList(shoutsAvailable, shoutsAvailable + 10);
+			} else {
+				return shouts;
+			}
+		}
+		return null;
+	}
 
 	@Override
 	public Long laudShout(Long shoutId) {

@@ -22,12 +22,12 @@ public class ShoutTO extends BaseTO {
 			ServiceRequest.class, ServiceResponse.class })
 	private String message;
 
-	@NotNull(groups = { ServiceRequest.CreateShout.class, ServiceRequest.class })
+	@NotNull(groups = { ServiceResponse.class, ServiceRequest.class })
 	@Min(value = 0, groups = { ServiceRequest.CreateShout.class,
 			ServiceRequest.class })
 	private Long laudCount;
 
-	@NotNull(groups = { ServiceRequest.CreateShout.class, ServiceRequest.class })
+	@NotNull(groups = { ServiceResponse.class, ServiceRequest.class })
 	@Min(value = 0, groups = { ServiceRequest.CreateShout.class,
 			ServiceRequest.class })
 	private Long hootCount;
@@ -37,6 +37,10 @@ public class ShoutTO extends BaseTO {
 
 	@Null(groups = { ServiceRequest.CreateShout.class })
 	private List<ReplyTO> replies;
+	
+	public ShoutTO() {
+		super();
+	}
 
 	public ShoutTO(String message) {
 		super();

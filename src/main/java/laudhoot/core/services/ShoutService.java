@@ -27,6 +27,14 @@ public interface ShoutService {
 	 * Get all shouts from a geoFence with passed code.
 	 * */
 	public List<ShoutTO> getShoutsFromGeoFence(String geoFenceCode);
+	
+	/**
+	 * Get all shouts from a geoFence with passed code.
+	 * @param geoFenceCode, code for a geofence
+	 * @param shoutsAvailable, shouts already available to the client
+	 * 
+	 * */
+	public List<ShoutTO> getShoutsFromGeoFence(String geoFenceCode, Integer shoutsAvailable);
 
 	/**
 	 * Record a laud to a shout.

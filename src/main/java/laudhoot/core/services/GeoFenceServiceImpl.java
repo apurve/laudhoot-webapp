@@ -75,21 +75,9 @@ public class GeoFenceServiceImpl implements GeoFenceService {
 		if (locationTO.getValidation().hasErrors()) {
 			return null;
 		}
-		// TODO - improve the algorithm to search for geoFence
-		Coordinate location = new Coordinate(locationTO);
-		List<GeoFence> geoFences = (List<GeoFence>) fenceRepository.findAll();
-		for (GeoFence geoFence : geoFences) {
-			if (geoFence.getExpiresOn().isAfter(DateTime.now())) {
-				Double distanceFromCenter = CoordinateManager.distanceBetween(
-						geoFence.getCenter(), location);
-				if (distanceFromCenter < geoFence.getRadius()) {
-					return new GeoFenceTO(geoFence);
-				}
-			}
-		}
-		return null;
+		return resolveGeofence(new Coordinate(locationTO));
 	}
-	
+
 	@Override
 	public GeoFenceTO findGeoFence(Double latitude, Double longitude) {
 		GeoFenceTO geoFenceTO = new GeoFenceTO();
@@ -99,8 +87,11 @@ public class GeoFenceServiceImpl implements GeoFenceService {
 			geoFenceTO.setError(true);
 			return geoFenceTO;
 		}
+		return resolveGeofence(new Coordinate(latitude, longitude));
+	}
+	
+	private GeoFenceTO resolveGeofence(Coordinate location) {
 		// TODO - improve the algorithm to search for geoFence
-		Coordinate location = new Coordinate(latitude, longitude);
 		List<GeoFence> geoFences = (List<GeoFence>) fenceRepository.findAll();
 		for (GeoFence geoFence : geoFences) {
 			if (geoFence.getExpiresOn().isAfter(DateTime.now())) {
