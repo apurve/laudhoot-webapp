@@ -2,6 +2,7 @@ package laudhoot.core.domain.rest;
 
 import javax.persistence.Entity;
 
+import laudhoot.core.domain.GeoFence;
 import laudhoot.web.domain.ReplyTO;
 
 /**
@@ -17,13 +18,12 @@ public class Reply extends Post {
 		super();
 	}
 
-	public Reply(String message) {
-		super(message);
+	public Reply(GeoFence geoFence, String message) {
+		super(geoFence, message);
 	}
 	
-	public Reply(ReplyTO replyTO) {
-		super(replyTO.getMessage(), replyTO.getLaudCount(), replyTO.getHootCount());
-		setId(replyTO.getId());
+	public Reply(GeoFence geoFence, ReplyTO replyTO) {
+		super(geoFence, replyTO.getMessage(), replyTO.getLaudCount(), replyTO.getHootCount());
 	}
 	
 }

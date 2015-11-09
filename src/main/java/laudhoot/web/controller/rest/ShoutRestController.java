@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Transactional
 @RestController
 @RequestMapping("/rest/shout")
 public class ShoutRestController extends BaseRestController {
@@ -35,7 +34,7 @@ public class ShoutRestController extends BaseRestController {
 	public ShoutTO createShout(@RequestBody ShoutTO shoutTO, BindingResult result, HttpServletResponse response) {
 		shoutTO.setValidation(result);
 		shoutTO = shoutService.createShout(shoutTO);
-		if (shoutTO != null && shoutTO.hasError()) {
+		if (shoutTO != null && shoutTO.getValidation() != null && shoutTO.getValidation().hasErrors()) {
 			shoutTO.populateValidatonErrors();
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
@@ -46,7 +45,7 @@ public class ShoutRestController extends BaseRestController {
 	public ReplyTO createRepy(@RequestBody ReplyTO replyTO, BindingResult result, HttpServletResponse response) {
 		replyTO.setValidation(result);
 		replyTO = shoutService.createReply(replyTO);
-		if (replyTO != null && replyTO.hasError()) {
+		if (replyTO != null && replyTO.getValidation() != null && replyTO.getValidation().hasErrors()) {
 			replyTO.populateValidatonErrors();
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}

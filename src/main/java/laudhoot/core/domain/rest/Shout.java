@@ -21,9 +21,6 @@ import laudhoot.web.domain.ShoutTO;
 @Entity
 public class Shout extends Post {
 
-	@OneToOne
-	private GeoFence geoFence;
-
 	@OneToMany(fetch=FetchType.EAGER)
 	List<Reply> replies;
 	
@@ -31,30 +28,13 @@ public class Shout extends Post {
 		super();
 	}
 
-	public Shout(String message, GeoFence geoFence) {
-		super(message);
-		this.geoFence = geoFence;
+	public Shout(GeoFence geoFence, String message) {
+		super(geoFence, message);
 	}
 
-	public Shout(ShoutTO shoutTO, GeoFence geoFence) {
-		super(shoutTO.getMessage(), shoutTO.getLaudCount(),  shoutTO.getHootCount());
+	public Shout(GeoFence geoFence, ShoutTO shoutTO) {
+		super(geoFence, shoutTO.getMessage(), shoutTO.getLaudCount(),  shoutTO.getHootCount());
 		super.setId(shoutTO.getId());
-		this.geoFence = geoFence;
-		List<Reply> replies = new ArrayList<Reply>();
-		if(shoutTO.getReplies() != null) {
-			for (ReplyTO replyTO : shoutTO.getReplies()) {
-				replies.add(new Reply(replyTO));
-			}
-		}
-		this.replies = replies;
-	}
-
-	public GeoFence getGeoFence() {
-		return geoFence;
-	}
-
-	public void setGeoFence(GeoFence geoFence) {
-		this.geoFence = geoFence;
 	}
 
 	public List<Reply> getReplies() {

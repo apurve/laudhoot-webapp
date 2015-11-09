@@ -13,6 +13,12 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import laudhoot.core.domain.BaseDomain;
 import laudhoot.core.util.validation.LaudhootExceptionUtils;
 
+/**
+ * Base domain for objects on which creation operation will be done from the rest API.
+ * 
+ * @author apurve
+ */
+
 @MappedSuperclass
 public abstract class BaseRestDomain extends BaseDomain {
 

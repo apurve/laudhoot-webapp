@@ -18,9 +18,11 @@ import laudhoot.web.util.ServiceRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 @Service
+@Transactional
 public class ShoutServiceImpl implements ShoutService {
 
 	@Autowired
@@ -43,8 +45,8 @@ public class ShoutServiceImpl implements ShoutService {
 		if (shoutTO.getValidation().hasErrors()) {
 			return shoutTO;
 		}
-		Shout shout = new Shout(shoutTO, geoFenceRepository.findByCode(shoutTO
-				.getGeoFenceCode()));
+		Shout shout = new Shout(geoFenceRepository.findByCode(shoutTO
+				.getGeoFenceCode()), shoutTO);
 		shout = shoutRepository.save(shout);
 		return new ShoutTO(shout);
 	}
@@ -59,7 +61,7 @@ public class ShoutServiceImpl implements ShoutService {
 		}
 		Shout shout = shoutRepository.findOne(replyTO.getShoutId());
 		LaudhootExceptionUtils.isNotNull(shout, "Shout not found.");
-		Reply reply = new Reply(replyTO);
+		Reply reply = new Reply(shout.getGeoFence(), replyTO);
 		reply = replyRepository.save(reply);
 
 		List<Reply> replies = shout.getReplies();
