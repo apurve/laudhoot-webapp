@@ -43,7 +43,7 @@ public abstract class BaseDomain {
 	
 	private String updatedBy;
 
-	Integer archiveStatus;
+	int archiveStatus;
 
 	public BaseDomain() {
 		super();

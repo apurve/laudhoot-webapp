@@ -5,11 +5,12 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import laudhoot.core.services.ShoutService;
+import laudhoot.web.domain.BaseTO;
 import laudhoot.web.domain.ReplyTO;
 import laudhoot.web.domain.ShoutTO;
+import laudhoot.web.domain.VoteTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,12 @@ public class ShoutRestController extends BaseRestController {
 	public List<ShoutTO> listShoutsOfGeoFence(@RequestParam("geoFenceCode") String geoFenceCode,
 			@RequestParam(value="shoutsAvailable", required=false) Integer shoutsAvailable) {
 		return shoutService.getShoutsFromGeoFence(geoFenceCode, shoutsAvailable);
+	}
+	
+	@RequestMapping(value = "/reply", method = RequestMethod.GET)
+	public List<ReplyTO> listRepliesOfShout(@RequestParam("shoutId") Long shoutId,
+			@RequestParam(value="repliesAvailable", required=false) Integer repliesAvailable) {
+		return shoutService.getRepliesFromShout(shoutId, repliesAvailable);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -52,23 +59,15 @@ public class ShoutRestController extends BaseRestController {
 		return replyTO;
 	}
 	
-	@RequestMapping(value = "/laud", method = RequestMethod.POST)
-	public Long laudShout(@RequestParam("shoutId") Long shoutId) {
-		return shoutService.laudShout(shoutId);
+	@RequestMapping(value = "/vote", method = RequestMethod.POST)
+	public VoteTO laudShout(@RequestBody VoteTO voteTO, BindingResult result, HttpServletResponse response) {
+		voteTO.setValidation(result);
+		voteTO = shoutService.vote(voteTO);
+		if (voteTO != null && voteTO.getValidation() != null && voteTO.getValidation().hasErrors()) {
+			voteTO.populateValidatonErrors();
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
+		return voteTO;
 	}
 	
-	@RequestMapping(value = "/hoot", method = RequestMethod.POST)
-	public Long hootShout(@RequestParam("shoutId") Long shoutId) {
-		return shoutService.hootShout(shoutId);
-	}
-	
-	@RequestMapping(value = "/reply/laud", method = RequestMethod.POST)
-	public Long laudRepy(@RequestParam("replyId") Long replyId) {
-		return shoutService.laudReply(replyId);
-	}
-	
-	@RequestMapping(value = "/reply/hoot", method = RequestMethod.POST)
-	public Long hootReply(@RequestParam("replyId") Long replyId) {
-		return shoutService.hootReply(replyId);
-	}
 }

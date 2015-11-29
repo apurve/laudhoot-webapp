@@ -11,4 +11,6 @@ public interface ServiceRequest {
 	interface CreateUser { }
 	
 	interface CreateClient { }
+	
+	interface LaudHoot { }
 }

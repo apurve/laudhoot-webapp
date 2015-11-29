@@ -34,7 +34,7 @@ public class GeoFenceTO extends BaseTO {
 	
 	@NotNull(groups={ServiceRequest.CreateGeoFence.class})
 	@Min(value=1, groups={ServiceRequest.CreateGeoFence.class})
-	@Max(value=72, groups={ServiceRequest.CreateGeoFence.class})
+	@Max(value=10000, groups={ServiceRequest.CreateGeoFence.class})
 	private Integer expiresInHours;
 	
 	public GeoFenceTO() {

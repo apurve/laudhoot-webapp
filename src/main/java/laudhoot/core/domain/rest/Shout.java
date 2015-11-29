@@ -1,15 +1,13 @@
 package laudhoot.core.domain.rest;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import laudhoot.core.domain.GeoFence;
-import laudhoot.web.domain.ReplyTO;
 import laudhoot.web.domain.ShoutTO;
 
 /**
@@ -21,7 +19,7 @@ import laudhoot.web.domain.ShoutTO;
 @Entity
 public class Shout extends Post {
 
-	@OneToMany(fetch=FetchType.EAGER)
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
 	List<Reply> replies;
 	
 	public Shout() {
@@ -33,8 +31,7 @@ public class Shout extends Post {
 	}
 
 	public Shout(GeoFence geoFence, ShoutTO shoutTO) {
-		super(geoFence, shoutTO.getMessage(), shoutTO.getLaudCount(),  shoutTO.getHootCount());
-		super.setId(shoutTO.getId());
+		super(geoFence, shoutTO.getMessage());
 	}
 
 	public List<Reply> getReplies() {

@@ -5,6 +5,7 @@ import java.util.List;
 import laudhoot.web.domain.CoordinateTO;
 import laudhoot.web.domain.ReplyTO;
 import laudhoot.web.domain.ShoutTO;
+import laudhoot.web.domain.VoteTO;
 
 public interface ShoutService {
 
@@ -29,39 +30,30 @@ public interface ShoutService {
 	public List<ShoutTO> getShoutsFromGeoFence(String geoFenceCode);
 	
 	/**
-	 * Get all shouts from a geoFence with passed code.
+	 * Get paginated shouts from a geoFence with passed code.
 	 * @param geoFenceCode, code for a geofence
 	 * @param shoutsAvailable, shouts already available to the client
 	 * 
 	 * */
 	public List<ShoutTO> getShoutsFromGeoFence(String geoFenceCode, Integer shoutsAvailable);
+	
+	/**
+	 * Get all replies from a shout.
+	 * */
+	public List<ReplyTO> getRepliesFromShout(Long shoutId);
+	
+	/**
+	 * Get paginated replies from a shout.
+	 * @param shoutId, primary key for a shout
+	 * @param repliesAvailable, replies already available to the client
+	 * 
+	 * */
+	public List<ReplyTO> getRepliesFromShout(Long shoutId, Integer repliesAvailable);
 
 	/**
-	 * Record a laud to a shout.
+	 * Record a vote.
 	 * 
-	 * @return laudCount
 	 * */
-	public Long laudShout(Long shoutId);
-
-	/**
-	 * Record a laud to a Reply.
-	 * 
-	 * @return laudCount
-	 * */
-	public Long laudReply(Long replyId);
-
-	/**
-	 * Record a hoot to a shout.
-	 * 
-	 * @return hootCount
-	 * */
-	public Long hootShout(Long shoutId);
-
-	/**
-	 * Record a hoot to a Reply.
-	 * 
-	 * @return hootCount
-	 * */
-	public Long hootReply(Long replyId);
+	public VoteTO vote(VoteTO voteTO);
 
 }

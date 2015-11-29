@@ -2,13 +2,17 @@ package laudhoot.web.domain;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 
 import laudhoot.core.domain.rest.Post;
+import laudhoot.core.domain.rest.Vote;
 import laudhoot.web.util.ServiceRequest;
 import laudhoot.web.util.ServiceResponse;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
 public abstract class PostTO extends BaseTO {
 
@@ -30,6 +34,12 @@ public abstract class PostTO extends BaseTO {
 			ServiceRequest.class })
 	private Long hootCount;
 	
+	private boolean voted;
+
+	@Null(groups = { ServiceRequest.CreateShout.class, ServiceRequest.class })
+	@NotNull(groups = { ServiceResponse.class })
+    private Boolean isLaudVote;
+	
 	public PostTO() {
 		super();
 	}
@@ -49,12 +59,23 @@ public abstract class PostTO extends BaseTO {
 	}
 	
 	public PostTO(Post post) {
-		super();
-		this.id = post.getId();
+		super(post.getId(), post.getCreatedBy(), post.getClientId());
 		this.geoFenceCode = post.getGeoFence().getCode();
 		this.message = post.getMessage();
 		this.laudCount = post.getLaudCount();
 		this.hootCount = post.getHootCount();
+		if (post.getVotes() != null)
+			for (Vote vote : post.getVotes()) {
+				if (SecurityContextHolder.getContext().getAuthentication() instanceof OAuth2Authentication) {
+					if (vote.getClientId().equals(
+							((OAuth2Authentication) SecurityContextHolder
+									.getContext().getAuthentication())
+									.getOAuth2Request().getClientId())) {
+						this.voted = true;
+						this.isLaudVote = vote.getIsLaud();
+					}
+				}
+			}
 	}
 
 	public String getMessage() {
@@ -87,6 +108,21 @@ public abstract class PostTO extends BaseTO {
 	public void setHootCount(Long hootCount) {
 		this.hootCount = hootCount;
 	}
-	
+
+	public boolean isVoted() {
+		return voted;
+	}
+
+	public void setVoted(boolean voted) {
+		this.voted = voted;
+	}
+
+	public Boolean getIsLaudVote() {
+		return isLaudVote;
+	}
+
+	public void setIsLaudVote(Boolean isLaudVote) {
+		this.isLaudVote = isLaudVote;
+	}
 	
 }

@@ -23,7 +23,7 @@ public class Reply extends Post {
 	}
 	
 	public Reply(GeoFence geoFence, ReplyTO replyTO) {
-		super(geoFence, replyTO.getMessage(), replyTO.getLaudCount(), replyTO.getHootCount());
+		super(geoFence, replyTO.getMessage());
 	}
 	
 }

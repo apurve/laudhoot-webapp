@@ -18,8 +18,10 @@ import laudhoot.web.util.ServiceRequest;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class GeoFenceServiceImpl implements GeoFenceService {
 
 	@Autowired

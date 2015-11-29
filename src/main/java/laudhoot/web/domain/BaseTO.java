@@ -30,6 +30,9 @@ public abstract class BaseTO implements Serializable {
 	@NotNull(groups={ServiceResponse.class, ServiceRequest.class})
 	String username;
 	
+	@NotNull(groups={ServiceResponse.class, ServiceRequest.class})
+	String clientId;
+	
 	/**
 	 * The result is passed from the controller to the service where validation is performed
 	 * the service should never create a new BindingResult object rather perform operation
@@ -51,17 +54,16 @@ public abstract class BaseTO implements Serializable {
 		super();
 	}
 
-	public BaseTO(Long id, BindingResult validation) {
+	public BaseTO(Long id) {
 		super();
 		this.id = id;
-		this.validation = validation;
 	}
 	
-	public BaseTO(Long id, String username, BindingResult validation) {
+	public BaseTO(Long id, String username, String clientId) {
 		super();
 		this.id = id;
 		this.username = username;
-		this.validation = validation;
+		this.clientId = clientId;
 	}
 
 	public Long getId() {
@@ -80,6 +82,14 @@ public abstract class BaseTO implements Serializable {
 		this.username = username;
 	}
 	
+	public String getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
+	}
+
 	public BindingResult getValidation() {
 		return validation;
 	}

@@ -1,14 +1,20 @@
 package laudhoot.core.domain.rest;
 
+import java.util.List;
+
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Lob;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import laudhoot.core.domain.GeoFence;
 
-@MappedSuperclass
-public abstract class Post extends BaseRestDomain {
+@Entity
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+public class Post extends BaseRestDomain {
 	
 	@OneToOne
 	private GeoFence geoFence;
@@ -17,9 +23,12 @@ public abstract class Post extends BaseRestDomain {
 	@Column(length = 500)
 	private String message;
 	
-	private Long laudCount;
+	@OneToMany
+	private List<Vote> votes;
+	
+	private long laudCount;
 
-	private Long hootCount;
+	private long hootCount;
 	
 	public Post() {
 		super();
@@ -31,22 +40,6 @@ public abstract class Post extends BaseRestDomain {
 		this.message = message;
 	}
 	
-	public Post(GeoFence geoFence, String message, Long laudCount, Long hootCount) {
-		super();
-		this.geoFence = geoFence;
-		this.message = message;
-		this.laudCount = laudCount;
-		this.hootCount = hootCount;
-	}
-	
-	public void laud() {
-		this.laudCount = this.laudCount + 1;
-	}
-
-	public void hoot() {
-		this.hootCount = this.hootCount + 1;
-	}
-
 	public String getMessage() {
 		return message;
 	}
@@ -62,13 +55,29 @@ public abstract class Post extends BaseRestDomain {
 	public void setGeoFence(GeoFence geoFence) {
 		this.geoFence = geoFence;
 	}
+	
+	public List<Vote> getVotes() {
+		return votes;
+	}
 
-	public Long getLaudCount() {
+	public void setVotes(List<Vote> votes) {
+		this.votes = votes;
+	}
+
+	public long getLaudCount() {
 		return laudCount;
 	}
 
-	public Long getHootCount() {
+	public long getHootCount() {
 		return hootCount;
 	}
 
+	public void setLaudCount(long laudCount) {
+		this.laudCount = laudCount;
+	}
+
+	public void setHootCount(long hootCount) {
+		this.hootCount = hootCount;
+	}
+	
 }

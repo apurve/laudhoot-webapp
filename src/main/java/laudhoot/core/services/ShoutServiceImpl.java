@@ -4,22 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import laudhoot.core.domain.GeoFence;
+import laudhoot.core.domain.rest.Post;
 import laudhoot.core.domain.rest.Reply;
 import laudhoot.core.domain.rest.Shout;
+import laudhoot.core.domain.rest.Vote;
 import laudhoot.core.repository.GeoFenceRepository;
+import laudhoot.core.repository.PostRepository;
 import laudhoot.core.repository.ReplyRepository;
 import laudhoot.core.repository.ShoutRepository;
+import laudhoot.core.repository.VoteRepository;
 import laudhoot.core.util.validation.LaudhootExceptionUtils;
 import laudhoot.core.util.validation.LaudhootValidator;
 import laudhoot.web.domain.CoordinateTO;
 import laudhoot.web.domain.ReplyTO;
 import laudhoot.web.domain.ShoutTO;
+import laudhoot.web.domain.VoteTO;
 import laudhoot.web.util.ServiceRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 @Service
 @Transactional
@@ -33,6 +37,12 @@ public class ShoutServiceImpl implements ShoutService {
 
 	@Autowired
 	GeoFenceRepository geoFenceRepository;
+	
+	@Autowired
+	PostRepository postRepository;
+	
+	@Autowired
+	VoteRepository voteRepository;
 
 	@Autowired
 	LaudhootValidator validator;
@@ -65,7 +75,7 @@ public class ShoutServiceImpl implements ShoutService {
 		reply = replyRepository.save(reply);
 
 		List<Reply> replies = shout.getReplies();
-		if (CollectionUtils.isEmpty(replies)) {
+		if (replies == null) {
 			replies = new ArrayList<Reply>();
 			replies.add(reply);
 			shout.setReplies(replies);
@@ -107,53 +117,53 @@ public class ShoutServiceImpl implements ShoutService {
 		}
 		return null;
 	}
-
+	
 	@Override
-	public Long laudShout(Long shoutId) {
-		LaudhootExceptionUtils.isNotNull(shoutId, "Shout id cannot be null.");
+	public List<ReplyTO> getRepliesFromShout(Long shoutId) {
+		LaudhootExceptionUtils.isNotNull(shoutId, "Shout id code cannot be null.");
 		Shout shout = shoutRepository.findOne(shoutId);
-		if (shout != null) {
-			shout.laud();
-			shoutRepository.save(shout);
-			return shout.getLaudCount();
+		List<ReplyTO> replies = new ArrayList<ReplyTO>();
+		for (Reply reply : shout.getReplies()) {
+			replies.add(new ReplyTO(reply, shoutId));
+		}
+		return replies;
+	}
+	
+	@Override
+	public List<ReplyTO> getRepliesFromShout(Long shoutId, Integer repliesAvailable) {
+		List<ReplyTO> replies = getRepliesFromShout(shoutId);
+		if (replies != null && repliesAvailable < replies.size()) {
+			replies = replies.subList(repliesAvailable, replies.size());
+			if (replies.size() > 10) {
+				return replies.subList(repliesAvailable, repliesAvailable + 10);
+			} else {
+				return replies;
+			}
 		}
 		return null;
 	}
 
 	@Override
-	public Long laudReply(Long replyId) {
-		LaudhootExceptionUtils.isNotNull(replyId, "Reply id cannot be null.");
-		Reply reply = replyRepository.findOne(replyId);
-		if (reply != null) {
-			reply.laud();
-			replyRepository.save(reply);
-			return reply.getLaudCount();
+	public VoteTO vote(VoteTO voteTO) {
+		LaudhootExceptionUtils.isNotNull(voteTO, "vote cannot be null.");
+		validator.validate(voteTO, voteTO.getValidation(),
+				ServiceRequest.LaudHoot.class);
+		if (voteTO.getValidation().hasErrors()) {
+			return voteTO;
 		}
-		return null;
-	}
-
-	@Override
-	public Long hootShout(Long shoutId) {
-		LaudhootExceptionUtils.isNotNull(shoutId, "Shout id cannot be null.");
-		Shout shout = shoutRepository.findOne(shoutId);
-		if (shout != null) {
-			shout.hoot();
-			shoutRepository.save(shout);
-			return shout.getHootCount();
+		Post post = postRepository.findOne(voteTO.getPostId());
+		Vote vote = new Vote(post, voteTO.getIsLaud());
+		voteRepository.save(vote);
+		if(vote.getIsLaud()) {
+			post.setLaudCount(post.getLaudCount() + 1);
+		} else {
+			post.setHootCount(post.getHootCount() + 1);
 		}
-		return null;
-	}
-
-	@Override
-	public Long hootReply(Long replyId) {
-		LaudhootExceptionUtils.isNotNull(replyId, "Reply id cannot be null.");
-		Reply reply = replyRepository.findOne(replyId);
-		if (reply != null) {
-			reply.hoot();
-			replyRepository.save(reply);
-			return reply.getHootCount();
+		if (post.getVotes() != null) {
+			post.setVotes(new ArrayList<Vote>());
 		}
-		return null;
+		post.getVotes().add(vote);
+		return new VoteTO(vote);
 	}
 
 }

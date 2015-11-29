@@ -24,6 +24,7 @@ public abstract class BaseRestDomain extends BaseDomain {
 
 	private String clientId;
 	
+	@Override
 	@PrePersist
 	protected void onCreate() {
 		this.setCreatedOn(DateTime.now());
@@ -34,17 +35,21 @@ public abstract class BaseRestDomain extends BaseDomain {
 		this.setUpdatedBy(null);
 	}
 
+	@Override
 	@PreUpdate
 	protected void onPersist() {
 		this.setUpdatedOn(DateTime.now());
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		populateUsername(authentication);
-		populateClientId(authentication);
 	}
 	
 	private void populateUsername(Authentication authentication) {
 		String createdByUsername = getUserName(authentication);
-		this.setCreatedBy(LaudhootExceptionUtils.isNotEmpty(createdByUsername) ? createdByUsername : "system-generated");
+		if(this.getCreatedBy() == null) {
+			this.setCreatedBy(LaudhootExceptionUtils.isNotEmpty(createdByUsername) ? createdByUsername : "system-generated");
+		} else {
+			this.setUpdatedBy(LaudhootExceptionUtils.isNotEmpty(createdByUsername) ? createdByUsername : "system-generated");
+		}
 	}
 	
 	private void populateClientId(Authentication authentication) {
