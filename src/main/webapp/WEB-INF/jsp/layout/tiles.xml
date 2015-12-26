@@ -9,5 +9,11 @@
 		<put-attribute name="menu" expression="/WEB-INF/jsp/layout/menu.jsp" />
 		<put-attribute name="body" value="" />
 		<put-attribute name="footer" value="/WEB-INF/jsp/layout/footer.jsp" />
+		<put-list-attribute name="additionalJs">
+			<add-attribute value="layout/dataTable.js" />		
+		</put-list-attribute>
+		<put-list-attribute name="additionalCss">
+			<add-attribute value="layout/layout.css" />		
+		</put-list-attribute>
 	</definition>
 </tiles-definitions>

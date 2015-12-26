@@ -1,18 +1,11 @@
 package laudhoot.config.core;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.sql.DataSource;
 
 import laudhoot.config.web.security.CustomAccessDeniedHandler;
 import laudhoot.config.web.security.CustomAuthenticationFailureHandler;
 import laudhoot.config.web.security.CustomLogoutSuccessHandler;
 import laudhoot.config.web.security.CustomSavedRequestAwareAuthenticationSuccessHandler;
-import laudhoot.core.domain.security.UserAuthority;
-import laudhoot.core.repository.security.UserAuthorityRepository;
-import laudhoot.core.services.security.UserInfoService;
-import laudhoot.web.domain.UserInfoTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -37,40 +30,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private UserDetailsService userDetailsService;
 	
 	@Autowired
-	private UserInfoService userInfoService;
-	
-	@Autowired
-	private UserAuthorityRepository userAuthorityRepository;
-	
-	@Autowired
 	protected void globalUserDetails(AuthenticationManagerBuilder auth)
 			throws Exception {
 		// TODO - encoded password in database and default user creation logic
 		ShaPasswordEncoder encoder = new ShaPasswordEncoder();
-		auth
-			.userDetailsService(userDetailsService)
+		auth.userDetailsService(userDetailsService)
 		/* .passwordEncoder(encoder) */;
-
-		if (userAuthorityRepository.count() < 1) {
-			UserAuthority authority = new UserAuthority("USER");
-			userAuthorityRepository.save(authority);
-			authority = new UserAuthority("ADMIN");
-			userAuthorityRepository.save(authority);
-		}
-
-		if (userInfoService.availableUsers() < 1) {
-			Set<String> authorities = new HashSet<String>();
-			authorities.add("USER");
-			UserInfoTO user = new UserInfoTO("password", "user", authorities,
-					true, true, true, true);
-			userInfoService.createUserInfo(user);
-
-			user.setId(null);
-			user.setUsername("admin");
-			authorities.add("ADMIN");
-			user.setAuthorities(authorities);
-			userInfoService.createUserInfo(user);
-		}
 
 	}
 	

@@ -1,4 +1,4 @@
-package laudhoot.web.domain;
+	package laudhoot.web.domain;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
@@ -42,12 +42,13 @@ public class GeoFenceTO extends BaseTO {
 	}
 
 	public GeoFenceTO(GeoFence geofence) {
-		super();
-		this.id = geofence.getId();
+		super(geofence.getId(), geofence.getCreatedBy(), null);
 		this.name = geofence.getName();
 		this.code = geofence.getCode();
 		this.description = geofence.getDescription();
-		this.center = new CoordinateTO(geofence.getCenter());
+		if(geofence.getCenter() != null) {
+			this.center = new CoordinateTO(geofence.getCenter());
+		}
 		this.radiusInMeters = geofence.getRadius();
 		this.expiresInHours = Hours.hoursBetween(DateTime.now(), geofence.getExpiresOn()).getHours();
 	}

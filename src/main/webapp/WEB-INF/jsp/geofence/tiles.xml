@@ -5,13 +5,5 @@
 <tiles-definitions>
 	<definition name="geofence" extends="layout">
 		<put-attribute name="body" value="/WEB-INF/jsp/geofence/geofence.jsp" />
-		<put-list-attribute name="additionalCss">
-			<add-attribute value="sales/productsList.css" />
-			<add-attribute value="layout/dataTable.css" />
-		</put-list-attribute>
-		<put-list-attribute name="additionalJs">
-			<add-attribute value="sales/productsList.js" />
-			<add-attribute value="layout/dataTable.js" />
-		</put-list-attribute>
 	</definition>
 </tiles-definitions>

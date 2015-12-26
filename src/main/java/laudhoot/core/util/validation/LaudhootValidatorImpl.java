@@ -46,18 +46,17 @@ public class LaudhootValidatorImpl implements InitializingBean,
 	public void validate(Object target, Errors errors) {
 		Set<ConstraintViolation<Object>> constraintViolations = validator
 				.validate(target);
-		for (ConstraintViolation<Object> constraintViolation : constraintViolations) {
-			String propertyPath = constraintViolation.getPropertyPath()
-					.toString();
-			String message = constraintViolation.getMessage();
-			errors.rejectValue(propertyPath, "", message);
-		}
+		processViolations(errors, constraintViolations);
 	}
 
 	@Override
 	public void validate(Object target, Errors errors, Class<?>... groups) {
 		Set<ConstraintViolation<Object>> constraintViolations = validator
 				.validate(target, groups);
+		processViolations(errors, constraintViolations);
+	}
+	
+	private void processViolations(Errors errors, Set<ConstraintViolation<Object>> constraintViolations) {
 		for (ConstraintViolation<Object> constraintViolation : constraintViolations) {
 			String propertyPath = constraintViolation.getPropertyPath()
 					.toString();
@@ -65,6 +64,5 @@ public class LaudhootValidatorImpl implements InitializingBean,
 			logger.info("Data Integrity Violation - " + propertyPath + " - " + message + " - " + constraintViolation.getConstraintDescriptor().getGroups());
 			errors.rejectValue(propertyPath, "", message);
 		}
-	}
-	
+	}	
 }

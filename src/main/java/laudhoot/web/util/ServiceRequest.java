@@ -3,6 +3,8 @@ package laudhoot.web.util;
 public interface ServiceRequest {
 
 	interface CreateGeoFence { }
+	
+	interface EditGeoFenceTreeNode { }
 
 	interface CreateShout {	}
 	

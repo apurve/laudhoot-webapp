@@ -25,10 +25,3 @@
 		<input type="submit" value="Add Geofence" />
 	</form:form>
 </c:if>
-<div>
-	<h1>CREATED GEOFENCE DETAILS</h1>
-</div>
-<h3>CODE : ${geofence.code }</h3>
-<h3>LATITUDE : ${geofence.center.latitude }</h3>
-<h3>LONGITUDE : ${geofence.center.longitude }</h3>
-<h3>EXPIRES ON : ${geofence.expiresInHours }</h3>

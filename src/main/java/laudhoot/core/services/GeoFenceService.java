@@ -65,5 +65,19 @@ public interface GeoFenceService {
 	 * @return String - code of geoFence
 	 * */
 	public String findGeoFenceCode(CoordinateTO locationTO);
+	
+	/**
+	 * Check if the geofence is fenceable in parent geofence.
+	 * 
+	 * @param parentCode - code of the parent geofence
+	 * @param code - code of the geofence
+	 * 
+	 * @return boolean - ture if fenceable, false otherwise
+	 * */
+	public boolean isFenceableInParent(String parentCode, String code);
+	
+	public interface Fenceable<T> {
+		boolean fences(T o);
+	}
 
 }

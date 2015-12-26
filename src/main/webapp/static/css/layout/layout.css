@@ -115,3 +115,13 @@ IMG.displayed-r {
 	color: #ff0000;
 	font-weight: bold;
 }
+
+.info {
+	color: #0000ff;
+	font-weight: bold;
+}
+
+.success {
+	color: #00ff00;
+	font-weight: bold;
+}

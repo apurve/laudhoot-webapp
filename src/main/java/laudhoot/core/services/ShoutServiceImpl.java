@@ -30,22 +30,22 @@ import org.springframework.transaction.annotation.Transactional;
 public class ShoutServiceImpl implements ShoutService {
 
 	@Autowired
-	ShoutRepository shoutRepository;
+	private ShoutRepository shoutRepository;
 
 	@Autowired
-	ReplyRepository replyRepository;
+	private ReplyRepository replyRepository;
 
 	@Autowired
-	GeoFenceRepository geoFenceRepository;
+	private GeoFenceRepository geoFenceRepository;
 	
 	@Autowired
-	PostRepository postRepository;
+	private PostRepository postRepository;
 	
 	@Autowired
-	VoteRepository voteRepository;
+	private VoteRepository voteRepository;
 
 	@Autowired
-	LaudhootValidator validator;
+	private LaudhootValidator validator;
 
 	@Override
 	public ShoutTO createShout(ShoutTO shoutTO) {

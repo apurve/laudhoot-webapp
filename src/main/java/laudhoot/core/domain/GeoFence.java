@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
+import laudhoot.core.services.GeoFenceService.Fenceable;
+import laudhoot.core.util.CoordinateManager;
 import laudhoot.web.domain.GeoFenceTO;
 
 import org.hibernate.annotations.Type;
@@ -17,33 +19,33 @@ import org.joda.time.DateTime;
  * */
 
 @Entity
-public class GeoFence extends BaseDomain {
+public class GeoFence extends BaseDomain implements Fenceable<GeoFence>, Comparable<GeoFence> {
 
-	//commonly known name of the geofence
+	// commonly known name of the geofence
 	private String name;
-	
-	//unique code of the geofence, cannot be changed once created
+
+	// unique code of the geofence, cannot be changed once created
 	@Column(updatable = false, unique = true)
 	private String code;
-	
+
 	@Lob
-	@Column(length=512)
+	@Column(length = 512)
 	private String description;
-	
+
 	@OneToOne
 	private Coordinate center;
-	
-	//radius of geofence in meters
+
+	// radius of geofence in meters
 	private Integer radius;
-	
+
 	@Column(columnDefinition = "TIMESTAMP", insertable = true, updatable = true)
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime expiresOn;
-	
+
 	public GeoFence() {
 
 	}
-	
+
 	public GeoFence(GeoFenceTO geofenceTO) {
 		super();
 		this.name = geofenceTO.getName();
@@ -51,9 +53,10 @@ public class GeoFence extends BaseDomain {
 		this.description = geofenceTO.getDescription();
 		this.center = new Coordinate(geofenceTO.getCenter());
 		this.radius = geofenceTO.getRadiusInMeters();
-		this.expiresOn = DateTime.now().plusHours(geofenceTO.getExpiresInHours());
+		this.expiresOn = DateTime.now().plusHours(
+				geofenceTO.getExpiresInHours());
 	}
-	
+
 	public GeoFence(String code, Coordinate center, Integer radius,
 			DateTime expiresOn) {
 		super();
@@ -72,6 +75,28 @@ public class GeoFence extends BaseDomain {
 		this.center = center;
 		this.radius = radius;
 		this.expiresOn = expiresOn;
+	}
+
+	@Override
+	public int compareTo(GeoFence o) {
+		if (this.radius > o.getRadius())
+			return 1;
+		else if (this.radius < o.getRadius())
+			return -1;
+		else
+			return 0;
+	}
+
+	@Override
+	public boolean fences(GeoFence o) {
+		if(!this.code.equalsIgnoreCase(o.getCode())) { // a fence cannot fence itself
+			if(this.radius > o.getRadius()) { // this does not fences o, if radius is smaller or equal
+				return this.radius - o.getRadius() > CoordinateManager.distanceBetween(
+						this.center, o.getCenter());
+				
+			}
+		}
+		return false;
 	}
 
 	public String getName() {
@@ -121,5 +146,5 @@ public class GeoFence extends BaseDomain {
 	public void setExpiresOn(DateTime expiresOn) {
 		this.expiresOn = expiresOn;
 	}
-	
+
 }

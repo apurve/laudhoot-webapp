@@ -11,15 +11,15 @@ import laudhoot.web.domain.CoordinateTO;
 
 @Entity
 public class Coordinate extends BaseDomain {
-	
+
 	private Double latitude;
-	
+
 	private Double longitude;
 
 	public Coordinate() {
 		super();
 	}
-	
+
 	public Coordinate(CoordinateTO geoLocationTO) {
 		super();
 		this.latitude = geoLocationTO.getLatitude();
@@ -30,6 +30,16 @@ public class Coordinate extends BaseDomain {
 		super();
 		this.latitude = latitude;
 		this.longitude = longitude;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Coordinate) {
+			Coordinate coordinate = (Coordinate) obj;
+			return this.latitude == coordinate.getLatitude()
+					&& this.longitude == coordinate.getLongitude();
+		}
+		return super.equals(obj);
 	}
 
 	public Double getLatitude() {
@@ -47,5 +57,5 @@ public class Coordinate extends BaseDomain {
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
-	
+
 }

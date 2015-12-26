@@ -6,8 +6,8 @@ import java.util.Set;
 
 import laudhoot.core.domain.Coordinate;
 import laudhoot.core.domain.GeoFence;
-import laudhoot.core.repository.GeoFenceRepository;
 import laudhoot.core.repository.CoordinateRepository;
+import laudhoot.core.repository.GeoFenceRepository;
 import laudhoot.core.util.CoordinateManager;
 import laudhoot.core.util.validation.LaudhootExceptionUtils;
 import laudhoot.core.util.validation.LaudhootValidator;
@@ -29,7 +29,10 @@ public class GeoFenceServiceImpl implements GeoFenceService {
 
 	@Autowired
 	private CoordinateRepository locationRepository;
-
+	
+	@Autowired
+	private GeoFenceTreeService geoFenceTreeService;
+	
 	@Autowired
 	private LaudhootValidator validator;
 
@@ -47,6 +50,9 @@ public class GeoFenceServiceImpl implements GeoFenceService {
 		locationRepository.save(center);
 		geofence.setCenter(center);
 		geofence = fenceRepository.save(geofence);
+		
+		geoFenceTreeService.createGeoFenceNode(geofence);
+		
 		return new GeoFenceTO(geofence);
 	}
 
@@ -113,5 +119,10 @@ public class GeoFenceServiceImpl implements GeoFenceService {
 		if(geoFenceTO != null)
 			return geoFenceTO.getCode();
 		return null;
+	}
+
+	@Override
+	public boolean isFenceableInParent(String parentCode, String code) {
+		return fenceRepository.findByCode(parentCode).fences(fenceRepository.findByCode(code));
 	}
 }
