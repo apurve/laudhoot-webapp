@@ -33,7 +33,7 @@ public class GeoFenceTreeServiceImpl implements GeoFenceTreeService {
 
 	@Override
 	public GeoFenceTreeNode createGeoFenceNode(GeoFence geoFence) {
-		GeoFenceTreeNode geoFenceTreeNode = new GeoFenceTreeNode(geoFence.getCode(), null);
+		GeoFenceTreeNode geoFenceTreeNode = new GeoFenceTreeNode(geoFence.getCode(), findNodeByCode(GeoFenceTreeNode.ROOT), null);
 		return geoFenceTreeRepository.save(geoFenceTreeNode);
 	}
 
@@ -58,6 +58,7 @@ public class GeoFenceTreeServiceImpl implements GeoFenceTreeService {
 			geoFenceTreeNodeTO.getValidation().addError(new FieldError(GeoFenceTreeNodeTO.class.getCanonicalName(), "parent", "The parent node does not exists."));
 			return geoFenceTreeNodeTO;
 		}
+		geoFenceTreeNode.setParent(parentGeoFenceTreeNode);
 		if(geoFenceTreeNodeTO.getChildren() != null) {
 			if(geoFenceTreeNode.getChildren() != null) {
 				geoFenceTreeNode.setChildren(new HashSet<GeoFenceTreeNode>());
@@ -65,6 +66,7 @@ public class GeoFenceTreeServiceImpl implements GeoFenceTreeService {
 			for(String child : geoFenceTreeNodeTO.getChildren()) {
 				GeoFenceTreeNode childNode = findNodeByCode(child);
 				parentGeoFenceTreeNode.getChildren().remove(childNode);
+				childNode.setParent(geoFenceTreeNode);
 				geoFenceTreeNode.getChildren().add(childNode);
 			}
 		}

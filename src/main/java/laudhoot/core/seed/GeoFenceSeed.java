@@ -24,7 +24,7 @@ public class GeoFenceSeed implements DatabaseSeed {
 			GeoFence geoFence = new GeoFence(GeoFenceTreeNode.ROOT, null, 0, null);
 			geoFenceRepository.save(geoFence);
 			
-			GeoFenceTreeNode geoFenceTreeNode = new GeoFenceTreeNode(geoFence.getCode(), null);
+			GeoFenceTreeNode geoFenceTreeNode = new GeoFenceTreeNode(geoFence.getCode(), null, null);
 			geoFenceTreeRepository.save(geoFenceTreeNode);
 		}
 	}

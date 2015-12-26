@@ -9,6 +9,7 @@
 <h3>LATITUDE : ${geofence.center.latitude }</h3>
 <h3>LONGITUDE : ${geofence.center.longitude }</h3>
 <h3>EXPIRES ON : ${geofence.expiresInHours }</h3>
+<h3>Parent : ${geofenceTreeNode.parent }</h3>
 <h3>Children : <c:forEach items="${geofenceTreeNode.children}" var="child">
 				- ${child} -
 				</c:forEach>

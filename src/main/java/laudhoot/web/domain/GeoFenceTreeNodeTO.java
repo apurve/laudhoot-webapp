@@ -32,6 +32,7 @@ public class GeoFenceTreeNodeTO extends BaseTO {
 	public GeoFenceTreeNodeTO(GeoFenceTreeNode geoFenceTreeNode) {
 		super(geoFenceTreeNode.getId(), geoFenceTreeNode.getCreatedBy(), null);
 		this.code = geoFenceTreeNode.getCode();
+		this.parent = geoFenceTreeNode.getParent().getCode();
 		this.children = new HashSet<String>();
 		for(GeoFenceTreeNode node : geoFenceTreeNode.getChildren()) {
 			children.add(node.getCode());
