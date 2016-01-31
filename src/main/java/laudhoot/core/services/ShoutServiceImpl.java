@@ -166,4 +166,27 @@ public class ShoutServiceImpl implements ShoutService {
 		return new VoteTO(vote);
 	}
 
+	@Override
+	public List<ShoutTO> getShoutsOfClient(String clientId, Integer shoutsAvailable) {
+		LaudhootExceptionUtils.isNotNull(clientId, "Client id cannot be empty.");
+		List<ShoutTO> shouts = new ArrayList<ShoutTO>();
+		for (Shout shout : shoutRepository.findByClientId(clientId)) {
+			shouts.add(new ShoutTO(shout));
+		}
+		if (shouts != null && shoutsAvailable < shouts.size()) {
+			shouts = shouts.subList(shoutsAvailable, shouts.size());
+			if (shouts.size() > 10) {
+				return shouts.subList(shoutsAvailable, shoutsAvailable + 10);
+			} else {
+				return shouts;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public ShoutTO getShout(Long id) {
+		return new ShoutTO(shoutRepository.findOne(id));
+	}
+
 }

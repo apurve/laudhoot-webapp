@@ -38,6 +38,14 @@ public interface ShoutService {
 	public List<ShoutTO> getShoutsFromGeoFence(String geoFenceCode, Integer shoutsAvailable);
 	
 	/**
+	 * Get paginated shouts of a client with passed imei.
+	 * @param clientId, imei of a client
+	 * @param shoutsAvailable, shouts already available to the client
+	 * 
+	 * */
+	public List<ShoutTO> getShoutsOfClient(String clientId, Integer shoutsAvailable);
+	
+	/**
 	 * Get all replies from a shout.
 	 * */
 	public List<ReplyTO> getRepliesFromShout(Long shoutId);
@@ -55,5 +63,10 @@ public interface ShoutService {
 	 * 
 	 * */
 	public VoteTO vote(VoteTO voteTO);
+
+	/**
+	 * Get the shout with the passed id.
+	 * */
+	public ShoutTO getShout(Long id);
 
 }

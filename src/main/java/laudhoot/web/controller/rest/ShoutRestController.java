@@ -5,7 +5,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import laudhoot.core.services.ShoutService;
-import laudhoot.web.domain.BaseTO;
 import laudhoot.web.domain.ReplyTO;
 import laudhoot.web.domain.ShoutTO;
 import laudhoot.web.domain.VoteTO;
@@ -29,6 +28,17 @@ public class ShoutRestController extends BaseRestController {
 	public List<ShoutTO> listShoutsOfGeoFence(@RequestParam("geoFenceCode") String geoFenceCode,
 			@RequestParam(value="shoutsAvailable", required=false) Integer shoutsAvailable) {
 		return shoutService.getShoutsFromGeoFence(geoFenceCode, shoutsAvailable);
+	}
+	
+	@RequestMapping(value = "/refresh", method = RequestMethod.GET)
+	public ShoutTO getShout(@RequestParam("id") Long id) {
+		return shoutService.getShout(id);
+	}
+	
+	@RequestMapping(value = "/client", method = RequestMethod.GET)
+	public List<ShoutTO> listShoutsOfClients(@RequestParam("clientId") String clientId,
+			@RequestParam(value="shoutsAvailable", required=false) Integer shoutsAvailable) {
+		return shoutService.getShoutsOfClient(clientId, shoutsAvailable);
 	}
 	
 	@RequestMapping(value = "/reply", method = RequestMethod.GET)

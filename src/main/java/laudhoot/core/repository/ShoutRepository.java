@@ -12,4 +12,6 @@ public interface ShoutRepository extends BaseRepository<Shout, Long> {
 
 	public List<Shout> findByGeoFence(GeoFence geoFence);
 	
+	public List<Shout> findByClientId(String clientId);
+	
 }
